@@ -46,3 +46,39 @@ int** findContinuousSequence(int target, int* returnSize, int** returnColumnSize
     return res;
 }
 
+//滑动窗口
+
+int** findContinuousSequence(int target, int* returnSize, int** returnColumnSizes){
+
+    int mid=target/2;//中间值
+    int **res=malloc(sizeof(int*)*mid);
+    int *col=malloc(sizeof(int)*mid);
+    int x=1,y=2;
+    int sum=x+y;
+    int m=0;//m是下标
+    while(x<=mid)
+    {
+        if(sum<target)
+        {
+            sum += ++y;
+        }
+        else if(sum>target)
+        {
+            sum -= x++;
+        }
+        else
+        {
+            col[m]=y-x+1;//得到元素个数
+            res[m]=malloc(sizeof(int)*col[m]);//申请对应大小的内存
+            for(int i=0;i<col[m];i++)
+            {
+                res[m][i]=i+x;
+            }
+            m++;
+            sum -= x++;
+        }
+    }
+    *returnSize=m;
+    *returnColumnSizes=col;//col数组中存储的其实是每一个序列的元素个数
+    return res;
+}
