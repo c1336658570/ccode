@@ -10,7 +10,6 @@
     }
 
 */
-
 int** flipAndInvertImage(int** image, int imageSize, int* imageColSize, 
 int* returnSize, int** returnColumnSizes){
     int i, j, col;
