@@ -81,7 +81,7 @@ void sort2(int *arr, int len)
 
 void sort3(int *a, int len)
 {
-	int begin, end, i;
+	int begin, end, i, t;
 
 	begin = 0;
 	end = len - 1;
@@ -102,7 +102,7 @@ void sort3(int *a, int len)
 				maxi = i;
 			}
 		}
-		swap(&a[begin], &a[mini]);
+		swap(&a[mini], &a[begin]);
 		if (begin == maxi)
 		{
 			maxi = mini;
@@ -111,11 +111,12 @@ void sort3(int *a, int len)
 		end--;
 		begin++;
 	}
+	
 }
 
 void swap(int *a, int *b)
 {
-	*a = *a ^ *b;
-	*b = *a ^ *b;
-	*a = *a ^ *b;
+	int t = *a;
+	*a = *b;
+	*b = t;
 }
