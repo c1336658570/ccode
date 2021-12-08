@@ -23,7 +23,7 @@ int main(void)
 	return 0;
 }
 
-//优化1
+//输出
 void traver(int *arr, int len)
 {
 	int i;
@@ -35,7 +35,6 @@ void traver(int *arr, int len)
 	printf("\n");
 }
 
-//优化2
 void sort1(int *arr, int len)
 {
 	int i, j;
@@ -54,59 +53,58 @@ void sort1(int *arr, int len)
 	}
 }
 
-//浼樺寲1
+//优化1
 void sort2(int *arr, int len)
 {
-        int i, j;
+	int i, j;
 	int flag;
 
-        for (i = 0; i < len-1; ++i)
-        {
+	for (i = 0; i < len-1; ++i)
+	{
 		flag = 0;
-                for (j = 0; j < len-1-i; ++j)
-                {
-                        if (arr[j] < arr[j+1])
-                        {
-                                arr[j] = arr[j] ^ arr[j+1];
-                                arr[j+1] = arr[j] ^ arr[j+1];
-                                arr[j] = arr[j] ^ arr[j+1];
+		for (j = 0; j < len-1-i; ++j)
+		{
+			if (arr[j] < arr[j+1])
+			{
+				arr[j] = arr[j] ^ arr[j+1];
+				arr[j+1] = arr[j] ^ arr[j+1];
+				arr[j] = arr[j] ^ arr[j+1];
 				flag = 1;
-                        }
-                }
+			}
+		}
 		if (flag == 0)
 		{
 			return;
 		}
-        }
+	}
 }
 
-//浼樺寲2
+//优化2
 void sort3(int *arr, int len)
 {
-        int i, j, k;
-        int flag, pos;
+	int i, j, k;
+	int flag, pos;
 
 	k = len - 1;
 	pos = 0;
-        for (i = 0; i < len-1; ++i)
-        {
-                flag = 0;
-                for (j = 0; j < k; ++j)
-                {
-                        if (arr[j] < arr[j+1])
-                        {
-                                arr[j] = arr[j] ^ arr[j+1];
-                                arr[j+1] = arr[j] ^ arr[j+1];
-                                arr[j] = arr[j] ^ arr[j+1];
-                                flag = 1;
+	for (i = 0; i < len-1; ++i)
+	{
+		flag = 0;
+		for (j = 0; j < k; ++j)
+		{
+			if (arr[j] < arr[j+1])
+			{
+				arr[j] = arr[j] ^ arr[j+1];
+				arr[j+1] = arr[j] ^ arr[j+1];
+				arr[j] = arr[j] ^ arr[j+1];
+				flag = 1;
 				pos = j;
-                        }
-                }
+			}
+		}
 		k = pos;
-                if (flag == 0)
-                {
-                        return;
-                }
-        }
+		if (flag == 0)
+		{
+			return;
+		}
+	}
 }
-

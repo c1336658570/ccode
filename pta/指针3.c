@@ -9,7 +9,7 @@
 结尾无空行
 */
 
-# include <stdio.h>
+/*# include <stdio.h>
 
 void put(int *arr, int len);
 
@@ -35,4 +35,23 @@ void put(int *arr, int len)
         printf("%d ", arr[len]);
     }
     printf("%d", arr[len]);
+}
+*/
+
+#include<stdio.h>
+int main(void)
+{
+	int m[50],i=0,j;
+	char a = 1;
+	
+	while((int)a!=10)
+	{
+		scanf("%d%c",&m[i],&a);
+		++i;
+    }
+   
+    int *p=m+i-1;
+
+	for(; p >= m; p--)
+		printf("%d ",*p);
 }
