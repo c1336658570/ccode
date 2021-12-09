@@ -27,6 +27,21 @@ false
 # include <stdbool.h>
 
 bool canJump(int* A, int n) {
-    int f[n];
+    bool f[n];
     int i, j;
+    f[0] = true;
+
+    for (j = 1; j < n; ++j)
+    {
+        f[j] = false;
+        for (i = 0; i < j; ++i)
+        {
+            if (f[i] && i+A[i] >= j)
+            {
+                f[j] = true;
+                break;
+            }
+        }
+    }
+    return f[i-1];
 }

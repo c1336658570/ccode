@@ -23,6 +23,28 @@
 
 # include <stdio.h>
 
-int coinChange(int* coins, int amount){
-    
+int max(a, b);
+
+int coinChange(int* coins, int amount, int n){
+    int f[amount+1];
+    int i, j;
+    f[0] = 0;
+
+    for (i = 1; i <= amount; ++i)
+    {
+        f[i] = __INT_MAX__;
+        for (j = 0; j < n; ++j)
+        {
+            if (i >= coins[j] && f[i-coins[j]] != __INT_MAX__)
+                f[i] = max(f[i], f[i-coins[j]] + 1);
+        }
+    }
+    if (f[amount] == __INT_MAX__)
+        return -1;
+    return f[amount];
+}
+
+int max(a, b)
+{
+    return a > b ? a : b;
 }
