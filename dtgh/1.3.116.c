@@ -26,6 +26,7 @@ false
 # include <stdio.h>
 # include <stdbool.h>
 
-bool canJump(int* A) {
-
+bool canJump(int* A, int n) {
+    int f[n];
+    int i, j;
 }

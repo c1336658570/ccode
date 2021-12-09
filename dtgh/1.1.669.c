@@ -21,6 +21,8 @@
 输出： -1
 */
 
+# include <stdio.h>
+
 int coinChange(int* coins, int amount){
     
 }
