@@ -1,36 +1,10 @@
 /*
     桶排序
-*/
-
-/*# include <stdio.h>
-
-//输入5 3 5 2 8
-int main(void)
-{
-    int a[11], i, j, t;
-    
-    for (i = 0; i < 11; ++i)
-    {
-        a[i] = 0;
-    }
-
-    for (i = 1; i <= 5; ++i)
-    {
-        scanf("%d", &t);
-        a[t]++;
-    }
-
-    for (i = 0; i < 11; ++i)
-    {
-        for (j = 0; j < a[i]; ++j)
-        {
-            printf("%d ", i);
-        }
-    }
-    printf("\n");
-
-    return 0;
-}
+    最好时间复杂度(n)
+    最差时间复杂度(N方)
+    时间复杂度(n+k)
+    空间复杂度(n+k)
+    稳定
 */
 
 /*
@@ -71,4 +45,14 @@ int main(void)
     printf("\n");
 
     return 0;
+}
+
+void bucketSort(int *arr, int len, int max)
+{
+    int i, j;
+    int buckets[max];
+
+    memset(buckets, 0, sizeof(buckets));
+
+
 }

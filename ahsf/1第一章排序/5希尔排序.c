@@ -1,5 +1,6 @@
 /*
     希尔排序
+    最好时间复杂度(N)
     最差时间复杂度O(N平方)
     平均时间复杂度O(N一点三次方)
     空间复杂度O(1)
@@ -8,6 +9,7 @@
 
 # include <stdio.h>
 
+void shell_sort(int *arr, int len);
 void shell_sort2(int *arr, int n);
 void group_sort(int *arr, int len, int i, int gap);
 void traver(int *arr, int len);
@@ -16,7 +18,7 @@ int main(void)
 {
     int arr[5] = {3, 1, 4, 2, 5};
 
-    shell_sort2(arr, 5);
+    shell2(arr, 5);
     traver(arr, 5);
 
     return 0;
@@ -31,6 +33,32 @@ void traver(int *arr, int len)
 		printf("%d ", arr[i]);
 	}
 	printf("\n");
+}
+
+void shell_sort(int *arr, int len)
+{
+    int i, j, gap;
+
+    for (gap = len/2; gap > 0; gap /= 2)
+    {
+        for (i = 0; i < gap; ++i)
+        {
+            for (j = i+gap; j < len; j += gap)
+            {
+                if (arr[j] < arr[j-gap])
+                {
+                    int temp = arr[j];
+                    int k = j - gap;
+                    while (k >= 0 && arr[k] > temp)
+                    {
+                        arr[k+gap] = arr[k];
+                        k -= gap;
+                    }
+                    arr[k+gap] = temp;
+                }
+            }
+        }
+    }
 }
 
 void shell_sort2(int *arr, int len)
