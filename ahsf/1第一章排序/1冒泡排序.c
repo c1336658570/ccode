@@ -16,7 +16,7 @@ int main(void)
 {
 	int arr[5] = {1, 3, 2, 5, 4};
 
-	sort3(arr, 5);
+	sort4(arr, 5);
 	
 	traver(arr, 5);
 

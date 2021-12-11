@@ -13,6 +13,7 @@
         "limits": "c",
         "io.h": "c",
         "string.h": "c",
-        "ctype.h": "c"
+        "ctype.h": "c",
+        "cstdlib": "c"
     }
 }
