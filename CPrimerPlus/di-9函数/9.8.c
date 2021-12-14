@@ -1,3 +1,6 @@
+/*
+    打印一个数二进制
+*/
 void to_binary(unsigned long n)
 {
     int r;
