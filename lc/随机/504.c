@@ -39,25 +39,40 @@ char * convertToBase7(int num){
     return arr;
 }
 
-char * convertToBase7(int num){
-    if(num == 0) {
-        return "0";
-    }
-    char* arr = (char*)calloc(12, sizeof(char));
-    if(num < 0)
+void reverse(char *s)//字符串反转函数
+{
+    int i,len=strlen(s);
+    char t;
+    for(i=0;i<len/2;i++)
     {
-        strcat(arr, "-");
+        t=s[i];
+        s[i]=s[len-1-i];
+        s[len-1-i]=t;
     }
-    num = abs(num);
-    char str[12] = {0};
-    int i = 0;
-    while(num > 0) 
+}
+char * convertToBase7(int num)
+{
+    char *ans=(char*)malloc(sizeof(char)*1000);
+    if(num==0)
     {
-        str[i++] = num % 7 + '0';
-        num /= 7;
+        ans[0]='0';
+        ans[1]='\0';
+        return ans;
     }
-    for(i -= 1; i >= 0; i--){
-        strncat(arr, str+i, 1);
+    int flag=1,k=0;
+    if(num<0)
+    {
+        flag=0;
+        num=-num;
     }
-    return arr;
+    while(num)
+    {
+        ans[k++]=num%7+'0';
+        num/=7;
+    }
+    ans[k]='\0';
+    if(flag==0)
+        strcat(ans,"-");
+    reverse(ans);
+    return ans;
 }
