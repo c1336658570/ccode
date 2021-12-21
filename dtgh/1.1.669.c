@@ -35,8 +35,11 @@ int coinChange(int* coins, int amount, int n){
         f[i] = __INT_MAX__;
         for (j = 0; j < n; ++j)
         {
-            if (i >= coins[j] && f[i-coins[j]] != __INT_MAX__)
-                f[i] = max(f[i], f[i-coins[j]] + 1);
+            if (i >= coins[j] && f[i-coins[j]] != __INT_MAX__ && f[i - coins[j]]+1 < f[i])
+                f[i] = f[i-coins[j]] + 1;
+
+            // if (i >= coins[j] && f[i-coins[j]] != __INT_MAX__)
+            //     f[i] = max(f[i], f[i-coins[j]] + 1);
         }
     }
     if (f[amount] == __INT_MAX__)
