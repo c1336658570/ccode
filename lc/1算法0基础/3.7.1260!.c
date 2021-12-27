@@ -20,5 +20,72 @@
 
 输入：grid = [[1,2,3],[4,5,6],[7,8,9]], k = 9
 输出：[[1,2,3],[4,5,6],[7,8,9]]
-
 */
+
+int** shiftGrid(int** grid, int gridSize, int* gridColSize, int k, int* returnSize, int** returnColumnSizes){
+    int **res = (int **)malloc(sizeof(int *) * gridSize);
+    (*returnColumnSizes) = (int *)malloc(sizeof(int) * gridSize);
+    int i, j, t = k;
+
+    for (i = 0; i < gridSize; ++i)
+    {
+        (*returnColumnSizes)[i] = gridColSize[i];
+        res[i] = (int *)malloc(sizeof(int) * gridColSize[i]);
+    }
+    if (t == 0)
+    {
+        return grid;
+    }
+
+    while(t)
+    {
+        for (i = 0; i < gridSize; ++i)
+        {   
+            for (j = 0; j < gridColSize[i]; ++j)
+            {
+                if (i == gridSize-1 && j == gridColSize[i]-1)
+                {
+                    res[0][0] = grid[i][j];
+                }
+                else if (j < gridColSize[i] - 1)
+                {
+                    res[i][j+1] = grid[i][j];
+                }
+                else
+                {
+                    res[i+1][0] = grid[i][j];
+                }
+            }
+        }
+        for (i = 0; i < gridSize; ++i)
+        {
+            for (j = 0; j <gridColSize[i]; ++j)
+            {
+                grid[i][j] = res[i][j];
+            }
+        }
+
+        t--;
+    }
+    *returnSize = gridSize;
+    return res;
+}
+
+int** shiftGrid(int** grid, int gridSize, int* gridColSize, int k, int* returnSize, int** returnColumnSizes){
+    int** arr = (int**)calloc(gridSize,sizeof(int*));
+    *returnColumnSizes=(int*)calloc(gridSize,sizeof(int));
+    int i,j,row,col;
+    for (i=0; i<gridSize; i++){
+        arr[i] = (int*)calloc(gridColSize[i],sizeof(int));
+    }
+    for (i=0; i<gridSize; i++){    
+        for (j=0; j<gridColSize[i]; j++){
+            row = (gridColSize[i]*i+j+k)/gridColSize[i]%gridSize;
+            col = (gridColSize[i]*i+j+k)%gridColSize[i];
+            arr[row][col] = grid[i][j];
+        }
+        (*returnColumnSizes)[i] = gridColSize[i];
+    }
+    *returnSize = gridSize;
+    return arr;
+}

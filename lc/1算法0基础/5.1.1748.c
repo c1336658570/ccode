@@ -41,3 +41,21 @@ int sumOfUnique(int* nums, int numsSize){
         sum += nums[numsSize - 1];
     return sum;
 }
+
+int sumOfUnique(int* nums, int numsSize){
+    int i, res[101], sum = 0;
+    
+    memset(res, 0, sizeof(res));
+
+    for (i = 0; i < numsSize; ++i)
+    {
+        res[nums[i]]++;
+    }
+    for (i = 0; i < numsSize; ++i)
+    {
+        if (res[nums[i]] == 1)
+            sum += nums[i];
+    }
+
+    return sum;
+}
