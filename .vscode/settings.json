@@ -18,5 +18,6 @@
         "array": "c",
         "string": "c",
         "string_view": "c"
-    }
+    },
+    "editor.suggest.snippetsPreventQuickSuggestions": false
 }

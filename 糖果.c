@@ -7,7 +7,7 @@ int main(void)
     int i, k, day = 0, sum = 0;
 
     scanf("%d", &k);
-
+    
     for (i = 1; ; ++i)
     {
         day += i;
