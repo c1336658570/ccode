@@ -78,10 +78,10 @@ void strbuf_reset(struct strbuf *sb)
 //将 sb 的长度扩大 extra。
 void strbuf_grow(struct strbuf *sb, size_t extra)
 {
-    if (extra == 0)
+    if (extra == 0 || sb->len+extra < sb->alloc)
         return;
-    sb->buf = (char *)realloc(sb->buf, extra);
-    sb->alloc = extra;
+    sb->buf = (char *)realloc(sb->buf, sb->len+extra);
+    sb->alloc = sb->len+extra;
 }
 
 //向 sb 追加长度为 len 的数据 data。
@@ -229,13 +229,10 @@ ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint)
     fp = fdopen(fd, "r");
     if (NULL == fp)
     {
-        perror("fd to fp error.");
-    }
-    else
-    {
-        printf("transform successfully...\n");
+        exit(1);
     }
     char ch;
+    ssize_t i = 0;
     while ( (ch = fgetc(fp)) != EOF )
     {
         while (sb->alloc <= sb->len+1)
@@ -244,25 +241,79 @@ ssize_t strbuf_read(struct strbuf *sb, int fd, size_t hint)
             sb->alloc += (hint ? hint : 8192);
         }
         strbuf_addch(sb, ch);
+        i++;
     }
+    return i;
 }
 
 // //将 将文件句柄为 fp 的一行内容读取到 sb 。
 int strbuf_getline(struct strbuf *sb, FILE *fp)
 {
     char ch;
+    int i = 0;
     while ( (ch = fgetc(fp)) != EOF )
     {
         if (ch == '\n')
             break;
         strbuf_add(sb, &ch, 1);
+        i++;
     }
+    return i;
 }
 
 // //将长度为 len 的字符串 str 根据切割字符 terminator 切成多个 strbuf,并从结果返回，
 // //max 可以用来限定最大切割数量。返回 struct strbuf 的指针数组，数组的最后元素为 NULL
 struct strbuf **strbuf_split_buf(const char *str, size_t len, int terminator, int max)
-{
+{   
+    struct strbuf **sb = (struct strbuf **)malloc(sizeof(struct strbuf *)*20);
+    for (int i = 0; i < 20; ++i)
+    {
+        sb[i] = (struct strbuf *)malloc(sizeof(struct strbuf));
+        sb[i]->buf = (char *)malloc(20);
+        sb[i]->len = 0;
+        sb[i]->alloc = 20;
+    }
+    return sb;
+
+    // if (len == 0)
+    //     return NULL;
+    
+    // struct strbuf ** sb = (struct strbuf **)malloc(sizeof(struct strbuf *));
+    // struct strbuf *t;
+    // long i = 0, j = 0, k = 2, p = 0;
+    // while (j < ((long)(char *)str)+len-1)
+    // {
+    //     if ( (str+max+j-1) > strchr(str+j, terminator) )
+    //     {
+    //         j = (long)((char *)strchr(str+j, terminator))+1;
+    //         t = (struct strbuf *)malloc(sizeof(struct strbuf));
+    //         t->len = j - p;
+    //         t->buf = (char *)malloc(t->len+2);
+    //         t->alloc = t->len+1;
+    //         memcpy(t,str+p, t->len);
+    //         sb = (struct strbuf **)realloc(sb, sizeof(struct strbuf *)*k);
+    //         sb[k-2] = t;
+    //         k++;
+            
+    //         p = j;
+    //     }
+    //     else
+    //     {
+    //         j += max;
+    //         t = (struct strbuf *)malloc(sizeof(struct strbuf));
+    //         t->len = j - p;
+    //         t->buf = (char *)malloc(t->len+2);
+    //         t->alloc = t->len+1;
+    //         memcpy(t,str+p, t->len);
+    //         sb = (struct strbuf **)realloc(sb, sizeof(struct strbuf *)*k);
+    //         sb[k-2] = t;
+    //         k++;
+            
+    //         p = j;
+    //     }
+    // }
+    // sb[k-2] = NULL;
+    // return sb;
     
 }
 
