@@ -1,0 +1,4 @@
+*.shared library
+.vscode
+.idea
+/**/a.out

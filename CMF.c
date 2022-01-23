@@ -11,19 +11,26 @@
 //初始化sb结构体，容量为alloc。
 void strbuf_init(struct strbuf *sb, size_t alloc)
 {
-    sb->buf = (char*)malloc(alloc * sizeof(char));    
-    sb->alloc = alloc;
-    sb->len = 0;
+    if (alloc == 0)
+    {
+        sb->buf = (char*)malloc(sizeof(char));
+        sb->alloc = 0;
+    }
+    else
+    {
+        sb->buf = (char*)malloc(alloc * sizeof(char));   
+        sb->alloc = alloc;
+    }
     sb->buf[0] = '\0';
+    sb->len = 0;
 }
 
 //将字符串填充到sb中，长度为len，容量为alloc。
 void strbuf_attach(struct strbuf *sb, void *str, size_t len,size_t alloc)
 {
-    strbuf_init(sb, 0);
     sb->alloc = alloc;
     sb->buf = (char *)str;
-    sb->len += len;
+    sb->len = len;
 }
 
 //释放sb结构体的内存。
