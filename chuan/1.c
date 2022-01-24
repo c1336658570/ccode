@@ -48,4 +48,3 @@ void Get_Next(char *a, char *next)
         next[i] = j;
     }
 }
-

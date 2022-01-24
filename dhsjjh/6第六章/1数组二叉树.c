@@ -22,7 +22,7 @@ typedef struct
 }Position;
 
 TElemType Nil=0; /*  设整型以0为空 */
-
+ 
 Status visit(TElemType c); 
 Status InitBiTree(SqBiTree T); 
 Status CreateBiTree(SqBiTree T); 
