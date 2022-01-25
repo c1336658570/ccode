@@ -51,3 +51,21 @@ int max(a, b)
 {
     return a > b ? a : b;
 }
+
+int coinChange(int* coins, int coinsSize, int amount){
+    int f[amount+1];
+    f[0] = 0;
+    int i, j;
+    for (i = 1; i <= amount; ++i)
+    {
+        f[i] = 0x7fffffff;
+        for (j = 0; j < coinsSize; ++j)
+        {
+            if (i-coins[j] >= 0 && f[i-coins[j]] != 0x7fffffff && f[i] > f[i-coins[j]]+1)
+                f[i] = f[i-coins[j]]+1;
+        }
+    }
+    if (f[amount] == 0x7fffffff)
+        return -1;
+    return f[amount];
+}
