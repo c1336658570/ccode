@@ -40,17 +40,30 @@ Note
 */
 
 # include <stdio.h>
-# include <math.h>
 
 int main(void)
 {
-    long n, i, l, r;
-    scanf("%ld", &n);
-    long a[n];
+    long long n, i, j, k, l, r;
+    scanf("%lld", &n);
+    long long val;
     for (i = 0; i < n; ++i)
     {
-        scanf("%ld", &a[i]);
+        scanf("%lld", &val);
+        if (val % 2 == 1)
+        {
+            l = val/2;
+            r = val/2+1;
+        }
+        else
+        {
+            l = 1-val;
+            r = val;
+        }
+        printf("%lld %lld\n", l, r);
     }
+    
+    //超时
+    /*
     for (i = 0; i < n; ++i)
     {
         l = 0;
@@ -66,6 +79,7 @@ int main(void)
         }
         printf("%ld %ld\n", l, r);
     }
+    */
 
     return 0;
 }

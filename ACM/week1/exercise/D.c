@@ -23,34 +23,63 @@ Sample Output
 1 2 2 1
 */
 
+// # include <stdio.h>
+
+// # define N 1001
+// int arr[N][N];
+
+// int main(void)
+// {
+//     int n, m, a, b, c, d, i, j;
+//     scanf("%d %d", &n, &m);
+//     for (i = 0; i < m; ++i)
+//     {
+//         scanf("%d %d %d %d", &a, &b, &c, &d);
+//         for (; a <= c; a++)
+//         {
+//             for(j = b; j <= d; j++)
+//             {
+//                 ++arr[a][j];
+//             }
+//         }
+//     }
+//     for (i = 1; i <= n; ++i)
+//     {
+//         for (j = 1; j <= n; ++j)
+//         {
+//             printf("%d ", arr[i][j]);
+//         }
+//         printf("\n");
+//     }
+
+//     return 0;
+// }
+
 # include <stdio.h>
 
-# define N 1001
-int arr[N][N];
-
-int main(void)
+int cf[1005][1005];
+int main()
 {
-    int n, m, a, b, c, d, i, j;
-    scanf("%d %d", &n, &m);
-    for (i = 0; i < m; ++i)
+    int n,m;
+    int a, b, c, d;
+    scanf("%d%d",&n,&m);
+    while(m--)
     {
-        scanf("%d %d %d %d", &a, &b, &c, &d);
-        for (; a <= c; a++)
+        scanf("%d%d%d%d",&a,&b,&c,&d);
+        for(int i=a;i<=c;i++)
         {
-            for(j = b; j <= d; j++)
-            {
-                ++arr[a][j];
-            }
+            cf[i][b]++;
+            cf[i][d+1]--;
         }
     }
-    for (i = 1; i <= n; ++i)
+    for(int i=1;i<=n;i++)
     {
-        for (j = 1; j <= n; ++j)
+        for(int j=1;j<=n;j++)
         {
-            printf("%d ", arr[i][j]);
+            cf[i][j]+=cf[i][j-1];
+            printf("%d ",cf[i][j]);
         }
         printf("\n");
     }
-
     return 0;
 }

@@ -27,8 +27,10 @@ int minCost(int **costs, int size, int* colsize)
 
     for (i = 1; i <= n; ++i)
     {
+        //记录第N个房子颜色
         for (j = 0; j < 3; ++j)
         {
+            //记录第N-1个房子颜色
             for (k = 0; k < 3; ++k)
             {
                 f[i][j] = __INT_MAX__;
