@@ -474,7 +474,7 @@ void unionL(SqList *La,SqList Lb)
     int La_len, Lb_len, i;
     ElemType e;
     La_len = ListLength(*La);
-    Lb_len = Listlength(Lb);
+    Lb_len = ListLength(Lb);
 
     for (i = 1; i <= Lb_len; ++i)
     {
