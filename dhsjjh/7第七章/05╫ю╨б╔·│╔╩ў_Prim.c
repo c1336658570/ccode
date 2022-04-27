@@ -1,7 +1,7 @@
-#include "stdio.h"    
-#include "stdlib.h"   
-#include "io.h"  
-#include "math.h"  
+#include "stdio.h"
+#include "stdlib.h"
+#include "sys/io.h"
+#include "math.h"
 #include "time.h"
 
 #define OK 1
@@ -13,95 +13,95 @@
 #define MAXVEX 20
 #define INFINITY 65535
 
-typedef int Status;	/* StatusÊÇº¯ÊıµÄÀàĞÍ,ÆäÖµÊÇº¯Êı½á¹û×´Ì¬´úÂë£¬ÈçOKµÈ */
+typedef int Status; /* Statusæ˜¯å‡½æ•°çš„ç±»å‹,å…¶å€¼æ˜¯å‡½æ•°ç»“æœçŠ¶æ€ä»£ç ï¼Œå¦‚OKç­‰ */
 
 typedef struct
 {
 	int arc[MAXVEX][MAXVEX];
 	int numVertexes, numEdges;
-}MGraph;
+} MGraph;
 
-void CreateMGraph(MGraph *G)/* ¹¹¼şÍ¼ */
+void CreateMGraph(MGraph *G) /* æ„ä»¶å›¾ */
 {
 	int i, j;
 
-	/* printf("ÇëÊäÈë±ßÊıºÍ¶¥µãÊı:"); */
-	G->numEdges=15;
-	G->numVertexes=9;
+	/* printf("è¯·è¾“å…¥è¾¹æ•°å’Œé¡¶ç‚¹æ•°:"); */
+	G->numEdges = 15;
+	G->numVertexes = 9;
 
-	for (i = 0; i < G->numVertexes; i++)/* ³õÊ¼»¯Í¼ */
+	for (i = 0; i < G->numVertexes; i++) /* åˆå§‹åŒ–å›¾ */
 	{
-		for ( j = 0; j < G->numVertexes; j++)
+		for (j = 0; j < G->numVertexes; j++)
 		{
-			if (i==j)
-				G->arc[i][j]=0;
+			if (i == j)
+				G->arc[i][j] = 0;
 			else
 				G->arc[i][j] = G->arc[j][i] = INFINITY;
 		}
 	}
 
-	G->arc[0][1]=10;
-	G->arc[0][5]=11; 
-	G->arc[1][2]=18; 
-	G->arc[1][8]=12; 
-	G->arc[1][6]=16; 
-	G->arc[2][8]=8; 
-	G->arc[2][3]=22; 
-	G->arc[3][8]=21; 
-	G->arc[3][6]=24; 
-	G->arc[3][7]=16;
-	G->arc[3][4]=20;
-	G->arc[4][7]=7; 
-	G->arc[4][5]=26; 
-	G->arc[5][6]=17; 
-	G->arc[6][7]=19; 
+	G->arc[0][1] = 10;
+	G->arc[0][5] = 11;
+	G->arc[1][2] = 18;
+	G->arc[1][8] = 12;
+	G->arc[1][6] = 16;
+	G->arc[2][8] = 8;
+	G->arc[2][3] = 22;
+	G->arc[3][8] = 21;
+	G->arc[3][6] = 24;
+	G->arc[3][7] = 16;
+	G->arc[3][4] = 20;
+	G->arc[4][7] = 7;
+	G->arc[4][5] = 26;
+	G->arc[5][6] = 17;
+	G->arc[6][7] = 19;
 
-	for(i = 0; i < G->numVertexes; i++)
+	for (i = 0; i < G->numVertexes; i++)
 	{
-		for(j = i; j < G->numVertexes; j++)
+		for (j = i; j < G->numVertexes; j++)
 		{
-			G->arc[j][i] =G->arc[i][j];
+			G->arc[j][i] = G->arc[i][j];
 		}
 	}
-
 }
 
-/* PrimËã·¨Éú³É×îĞ¡Éú³ÉÊ÷  */
+/* Primç®—æ³•ç”Ÿæˆæœ€å°ç”Ÿæˆæ ‘  */
 void MiniSpanTree_Prim(MGraph G)
 {
 	int min, i, j, k;
-	int adjvex[MAXVEX];		/* ±£´æÏà¹Ø¶¥µãÏÂ±ê */
-	int lowcost[MAXVEX];	/* ±£´æÏà¹Ø¶¥µã¼ä±ßµÄÈ¨Öµ */
-	lowcost[0] = 0;/* ³õÊ¼»¯µÚÒ»¸öÈ¨ÖµÎª0£¬¼´v0¼ÓÈëÉú³ÉÊ÷ */
-			/* lowcostµÄÖµÎª0£¬ÔÚÕâÀï¾ÍÊÇ´ËÏÂ±êµÄ¶¥µãÒÑ¾­¼ÓÈëÉú³ÉÊ÷ */
-	adjvex[0] = 0;			/* ³õÊ¼»¯µÚÒ»¸ö¶¥µãÏÂ±êÎª0 */
-	for(i = 1; i < G.numVertexes; i++)	/* Ñ­»·³ıÏÂ±êÎª0ÍâµÄÈ«²¿¶¥µã */
+	int adjvex[MAXVEX];					/* ä¿å­˜ç›¸å…³é¡¶ç‚¹ä¸‹æ ‡ */
+	int lowcost[MAXVEX];				/* ä¿å­˜ç›¸å…³é¡¶ç‚¹é—´è¾¹çš„æƒå€¼ */
+	lowcost[0] = 0;						/* åˆå§‹åŒ–ç¬¬ä¸€ä¸ªæƒå€¼ä¸º0ï¼Œå³v0åŠ å…¥ç”Ÿæˆæ ‘ */
+										/* lowcostçš„å€¼ä¸º0ï¼Œåœ¨è¿™é‡Œå°±æ˜¯æ­¤ä¸‹æ ‡çš„é¡¶ç‚¹å·²ç»åŠ å…¥ç”Ÿæˆæ ‘ */
+	adjvex[0] = 0;						/* åˆå§‹åŒ–ç¬¬ä¸€ä¸ªé¡¶ç‚¹ä¸‹æ ‡ä¸º0 */
+	for (i = 1; i < G.numVertexes; i++) /* å¾ªç¯é™¤ä¸‹æ ‡ä¸º0å¤–çš„å…¨éƒ¨é¡¶ç‚¹ */
 	{
-		lowcost[i] = G.arc[0][i];	/* ½«v0¶¥µãÓëÖ®ÓĞ±ßµÄÈ¨Öµ´æÈëÊı×é */
-		adjvex[i] = 0;					/* ³õÊ¼»¯¶¼Îªv0µÄÏÂ±ê */
+		lowcost[i] = G.arc[0][i]; /* å°†v0é¡¶ç‚¹ä¸ä¹‹æœ‰è¾¹çš„æƒå€¼å­˜å…¥æ•°ç»„ */
+		adjvex[i] = 0;			  /* åˆå§‹åŒ–éƒ½ä¸ºv0çš„ä¸‹æ ‡ */
 	}
-	for(i = 1; i < G.numVertexes; i++)
+	for (i = 1; i < G.numVertexes; i++)
 	{
-		min = INFINITY;	/* ³õÊ¼»¯×îĞ¡È¨ÖµÎª¡Ş£¬ */
-						/* Í¨³£ÉèÖÃÎª²»¿ÉÄÜµÄ´óÊı×ÖÈç32767¡¢65535µÈ */
-		j = 1;k = 0;
-		while(j < G.numVertexes)	/* Ñ­»·È«²¿¶¥µã */
+		min = INFINITY; /* åˆå§‹åŒ–æœ€å°æƒå€¼ä¸ºâˆï¼Œ */
+		/* é€šå¸¸è®¾ç½®ä¸ºä¸å¯èƒ½çš„å¤§æ•°å­—å¦‚32767ã€65535ç­‰ */
+		j = 1;
+		k = 0;
+		while (j < G.numVertexes) /* å¾ªç¯å…¨éƒ¨é¡¶ç‚¹ */
 		{
-			if(lowcost[j]!=0 && lowcost[j] < min)/* Èç¹ûÈ¨Öµ²»Îª0ÇÒÈ¨ÖµĞ¡ÓÚmin */
-			{	
-				min = lowcost[j];	/* ÔòÈÃµ±Ç°È¨Öµ³ÉÎª×îĞ¡Öµ */
-				k = j;			/* ½«µ±Ç°×îĞ¡ÖµµÄÏÂ±ê´æÈëk */
+			if (lowcost[j] != 0 && lowcost[j] < min) /* å¦‚æœæƒå€¼ä¸ä¸º0ä¸”æƒå€¼å°äºmin */
+			{
+				min = lowcost[j]; /* åˆ™è®©å½“å‰æƒå€¼æˆä¸ºæœ€å°å€¼ */
+				k = j;			  /* å°†å½“å‰æœ€å°å€¼çš„ä¸‹æ ‡å­˜å…¥k */
 			}
 			j++;
 		}
-		printf("(%d, %d)\n", adjvex[k], k);/* ´òÓ¡µ±Ç°¶¥µã±ßÖĞÈ¨Öµ×îĞ¡µÄ±ß */
-		lowcost[k] = 0;/* ½«µ±Ç°¶¥µãµÄÈ¨ÖµÉèÖÃÎª0,±íÊ¾´Ë¶¥µãÒÑ¾­Íê³ÉÈÎÎñ */
-		for(j = 1; j < G.numVertexes; j++)	/* Ñ­»·ËùÓĞ¶¥µã */
+		printf("(%d, %d)\n", adjvex[k], k); /* æ‰“å°å½“å‰é¡¶ç‚¹è¾¹ä¸­æƒå€¼æœ€å°çš„è¾¹ */
+		lowcost[k] = 0;						/* å°†å½“å‰é¡¶ç‚¹çš„æƒå€¼è®¾ç½®ä¸º0,è¡¨ç¤ºæ­¤é¡¶ç‚¹å·²ç»å®Œæˆä»»åŠ¡ */
+		for (j = 1; j < G.numVertexes; j++) /* å¾ªç¯æ‰€æœ‰é¡¶ç‚¹ */
 		{
-			if(lowcost[j]!=0 && G.arc[k][j] < lowcost[j]) 
-			{/* Èç¹ûÏÂ±êÎªk¶¥µã¸÷±ßÈ¨ÖµĞ¡ÓÚ´ËÇ°ÕâĞ©¶¥µãÎ´±»¼ÓÈëÉú³ÉÊ÷È¨Öµ */
-				lowcost[j] = G.arc[k][j];/* ½«½ÏĞ¡µÄÈ¨Öµ´æÈëlowcostÏàÓ¦Î»ÖÃ */
-				adjvex[j] = k;				/* ½«ÏÂ±êÎªkµÄ¶¥µã´æÈëadjvex */
+			if (lowcost[j] != 0 && G.arc[k][j] < lowcost[j])
+			{							  /* å¦‚æœä¸‹æ ‡ä¸ºké¡¶ç‚¹å„è¾¹æƒå€¼å°äºæ­¤å‰è¿™äº›é¡¶ç‚¹æœªè¢«åŠ å…¥ç”Ÿæˆæ ‘æƒå€¼ */
+				lowcost[j] = G.arc[k][j]; /* å°†è¾ƒå°çš„æƒå€¼å­˜å…¥lowcostç›¸åº”ä½ç½® */
+				adjvex[j] = k;			  /* å°†ä¸‹æ ‡ä¸ºkçš„é¡¶ç‚¹å­˜å…¥adjvex */
 			}
 		}
 	}
@@ -112,7 +112,6 @@ int main(void)
 	MGraph G;
 	CreateMGraph(&G);
 	MiniSpanTree_Prim(G);
-  
+
 	return 0;
- 
 }

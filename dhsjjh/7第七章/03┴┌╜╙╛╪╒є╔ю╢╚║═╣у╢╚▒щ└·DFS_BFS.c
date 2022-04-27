@@ -1,7 +1,7 @@
-#include "stdio.h"    
-#include "stdlib.h"   
-#include "io.h"  
-#include "math.h"  
+#include "stdio.h"
+#include "stdlib.h"
+#include "sys/io.h"
+#include "math.h"
 #include "time.h"
 
 #define OK 1
@@ -9,201 +9,195 @@
 #define TRUE 1
 #define FALSE 0
 
-typedef int Status;	/* StatusÊÇº¯ÊıµÄÀàĞÍ,ÆäÖµÊÇº¯Êı½á¹û×´Ì¬´úÂë£¬ÈçOKµÈ */  
-typedef int Boolean; /* BooleanÊÇ²¼¶ûÀàĞÍ,ÆäÖµÊÇTRUE»òFALSE */
+typedef int Status;	 /* Statusæ˜¯å‡½æ•°çš„ç±»å‹,å…¶å€¼æ˜¯å‡½æ•°ç»“æœçŠ¶æ€ä»£ç ï¼Œå¦‚OKç­‰ */
+typedef int Boolean; /* Booleanæ˜¯å¸ƒå°”ç±»å‹,å…¶å€¼æ˜¯TRUEæˆ–FALSE */
 
-typedef char VertexType; /* ¶¥µãÀàĞÍÓ¦ÓÉÓÃ»§¶¨Òå */
-typedef int EdgeType; /* ±ßÉÏµÄÈ¨ÖµÀàĞÍÓ¦ÓÉÓÃ»§¶¨Òå */
+typedef char VertexType; /* é¡¶ç‚¹ç±»å‹åº”ç”±ç”¨æˆ·å®šä¹‰ */
+typedef int EdgeType;	 /* è¾¹ä¸Šçš„æƒå€¼ç±»å‹åº”ç”±ç”¨æˆ·å®šä¹‰ */
 
-#define MAXSIZE 9 /* ´æ´¢¿Õ¼ä³õÊ¼·ÖÅäÁ¿ */
+#define MAXSIZE 9 /* å­˜å‚¨ç©ºé—´åˆå§‹åˆ†é…é‡ */
 #define MAXEDGE 15
 #define MAXVEX 9
 #define INFINITY 65535
 
 typedef struct
 {
-	VertexType vexs[MAXVEX]; /* ¶¥µã±í */
-	EdgeType arc[MAXVEX][MAXVEX];/* ÁÚ½Ó¾ØÕó£¬¿É¿´×÷±ß±í */
-	int numVertexes, numEdges; /* Í¼ÖĞµ±Ç°µÄ¶¥µãÊıºÍ±ßÊı */ 
-}MGraph;
+	VertexType vexs[MAXVEX];	  /* é¡¶ç‚¹è¡¨ */
+	EdgeType arc[MAXVEX][MAXVEX]; /* é‚»æ¥çŸ©é˜µï¼Œå¯çœ‹ä½œè¾¹è¡¨ */
+	int numVertexes, numEdges;	  /* å›¾ä¸­å½“å‰çš„é¡¶ç‚¹æ•°å’Œè¾¹æ•° */
+} MGraph;
 
-/* ÓÃµ½µÄ¶ÓÁĞ½á¹¹Óëº¯Êı********************************** */
+/* ç”¨åˆ°çš„é˜Ÿåˆ—ç»“æ„ä¸å‡½æ•°********************************** */
 
-/* Ñ­»·¶ÓÁĞµÄË³Ğò´æ´¢½á¹¹ */
+/* å¾ªç¯é˜Ÿåˆ—çš„é¡ºåºå­˜å‚¨ç»“æ„ */
 typedef struct
 {
 	int data[MAXSIZE];
-	int front;    	/* Í·Ö¸Õë */
-	int rear;		/* Î²Ö¸Õë£¬Èô¶ÓÁĞ²»¿Õ£¬Ö¸Ïò¶ÓÁĞÎ²ÔªËØµÄÏÂÒ»¸öÎ»ÖÃ */
-}Queue;
+	int front; /* å¤´æŒ‡é’ˆ */
+	int rear;  /* å°¾æŒ‡é’ˆï¼Œè‹¥é˜Ÿåˆ—ä¸ç©ºï¼ŒæŒ‡å‘é˜Ÿåˆ—å°¾å…ƒç´ çš„ä¸‹ä¸€ä¸ªä½ç½® */
+} Queue;
 
-/* ³õÊ¼»¯Ò»¸ö¿Õ¶ÓÁĞQ */
+/* åˆå§‹åŒ–ä¸€ä¸ªç©ºé˜Ÿåˆ—Q */
 Status InitQueue(Queue *Q)
 {
-	Q->front=0;
-	Q->rear=0;
-	return  OK;
+	Q->front = 0;
+	Q->rear = 0;
+	return OK;
 }
 
-/* Èô¶ÓÁĞQÎª¿Õ¶ÓÁĞ,Ôò·µ»ØTRUE,·ñÔò·µ»ØFALSE */
+/* è‹¥é˜Ÿåˆ—Qä¸ºç©ºé˜Ÿåˆ—,åˆ™è¿”å›TRUE,å¦åˆ™è¿”å›FALSE */
 Status QueueEmpty(Queue Q)
-{ 
-	if(Q.front==Q.rear) /* ¶ÓÁĞ¿ÕµÄ±êÖ¾ */
+{
+	if (Q.front == Q.rear) /* é˜Ÿåˆ—ç©ºçš„æ ‡å¿— */
 		return TRUE;
 	else
 		return FALSE;
 }
 
-/* Èô¶ÓÁĞÎ´Âú£¬Ôò²åÈëÔªËØeÎªQĞÂµÄ¶ÓÎ²ÔªËØ */
-Status EnQueue(Queue *Q,int e)
+/* è‹¥é˜Ÿåˆ—æœªæ»¡ï¼Œåˆ™æ’å…¥å…ƒç´ eä¸ºQæ–°çš„é˜Ÿå°¾å…ƒç´  */
+Status EnQueue(Queue *Q, int e)
 {
-	if ((Q->rear+1)%MAXSIZE == Q->front)	/* ¶ÓÁĞÂúµÄÅĞ¶Ï */
+	if ((Q->rear + 1) % MAXSIZE == Q->front) /* é˜Ÿåˆ—æ»¡çš„åˆ¤æ–­ */
 		return ERROR;
-	Q->data[Q->rear]=e;			/* ½«ÔªËØe¸³Öµ¸ø¶ÓÎ² */
-	Q->rear=(Q->rear+1)%MAXSIZE;/* rearÖ¸ÕëÏòºóÒÆÒ»Î»ÖÃ£¬ */
-								/* Èôµ½×îºóÔò×ªµ½Êı×éÍ·²¿ */
-	return  OK;
+	Q->data[Q->rear] = e;			   /* å°†å…ƒç´ eèµ‹å€¼ç»™é˜Ÿå°¾ */
+	Q->rear = (Q->rear + 1) % MAXSIZE; /* rearæŒ‡é’ˆå‘åç§»ä¸€ä½ç½®ï¼Œ */
+									   /* è‹¥åˆ°æœ€ååˆ™è½¬åˆ°æ•°ç»„å¤´éƒ¨ */
+	return OK;
 }
 
-/* Èô¶ÓÁĞ²»¿Õ£¬ÔòÉ¾³ıQÖĞ¶ÓÍ·ÔªËØ£¬ÓÃe·µ»ØÆäÖµ */
-Status DeQueue(Queue *Q,int *e)
+/* è‹¥é˜Ÿåˆ—ä¸ç©ºï¼Œåˆ™åˆ é™¤Qä¸­é˜Ÿå¤´å…ƒç´ ï¼Œç”¨eè¿”å›å…¶å€¼ */
+Status DeQueue(Queue *Q, int *e)
 {
-	if (Q->front == Q->rear)			/* ¶ÓÁĞ¿ÕµÄÅĞ¶Ï */
+	if (Q->front == Q->rear) /* é˜Ÿåˆ—ç©ºçš„åˆ¤æ–­ */
 		return ERROR;
-	*e=Q->data[Q->front];				/* ½«¶ÓÍ·ÔªËØ¸³Öµ¸øe */
-	Q->front=(Q->front+1)%MAXSIZE;	/* frontÖ¸ÕëÏòºóÒÆÒ»Î»ÖÃ£¬ */
-									/* Èôµ½×îºóÔò×ªµ½Êı×éÍ·²¿ */
-	return  OK;
+	*e = Q->data[Q->front];				 /* å°†é˜Ÿå¤´å…ƒç´ èµ‹å€¼ç»™e */
+	Q->front = (Q->front + 1) % MAXSIZE; /* frontæŒ‡é’ˆå‘åç§»ä¸€ä½ç½®ï¼Œ */
+										 /* è‹¥åˆ°æœ€ååˆ™è½¬åˆ°æ•°ç»„å¤´éƒ¨ */
+	return OK;
 }
 /* ****************************************************** */
-
 
 void CreateMGraph(MGraph *G)
 {
 	int i, j;
 
-	G->numEdges=15;
-	G->numVertexes=9;
+	G->numEdges = 15;
+	G->numVertexes = 9;
 
-	/* ¶ÁÈë¶¥µãĞÅÏ¢£¬½¨Á¢¶¥µã±í */
-	G->vexs[0]='A';
-	G->vexs[1]='B';
-	G->vexs[2]='C';
-	G->vexs[3]='D';
-	G->vexs[4]='E';
-	G->vexs[5]='F';
-	G->vexs[6]='G';
-	G->vexs[7]='H';
-	G->vexs[8]='I';
+	/* è¯»å…¥é¡¶ç‚¹ä¿¡æ¯ï¼Œå»ºç«‹é¡¶ç‚¹è¡¨ */
+	G->vexs[0] = 'A';
+	G->vexs[1] = 'B';
+	G->vexs[2] = 'C';
+	G->vexs[3] = 'D';
+	G->vexs[4] = 'E';
+	G->vexs[5] = 'F';
+	G->vexs[6] = 'G';
+	G->vexs[7] = 'H';
+	G->vexs[8] = 'I';
 
-
-	for (i = 0; i < G->numVertexes; i++)/* ³õÊ¼»¯Í¼ */
+	for (i = 0; i < G->numVertexes; i++) /* åˆå§‹åŒ–å›¾ */
 	{
-		for ( j = 0; j < G->numVertexes; j++)
+		for (j = 0; j < G->numVertexes; j++)
 		{
-			G->arc[i][j]=0;
+			G->arc[i][j] = 0;
 		}
 	}
 
-	G->arc[0][1]=1;
-	G->arc[0][5]=1;
+	G->arc[0][1] = 1;
+	G->arc[0][5] = 1;
 
-	G->arc[1][2]=1; 
-	G->arc[1][8]=1; 
-	G->arc[1][6]=1; 
-	
-	G->arc[2][3]=1; 
-	G->arc[2][8]=1; 
-	
-	G->arc[3][4]=1;
-	G->arc[3][7]=1;
-	G->arc[3][6]=1;
-	G->arc[3][8]=1;
+	G->arc[1][2] = 1;
+	G->arc[1][8] = 1;
+	G->arc[1][6] = 1;
 
-	G->arc[4][5]=1;
-	G->arc[4][7]=1;
+	G->arc[2][3] = 1;
+	G->arc[2][8] = 1;
 
-	G->arc[5][6]=1; 
-	
-	G->arc[6][7]=1; 
+	G->arc[3][4] = 1;
+	G->arc[3][7] = 1;
+	G->arc[3][6] = 1;
+	G->arc[3][8] = 1;
 
-	
-	for(i = 0; i < G->numVertexes; i++)
+	G->arc[4][5] = 1;
+	G->arc[4][7] = 1;
+
+	G->arc[5][6] = 1;
+
+	G->arc[6][7] = 1;
+
+	for (i = 0; i < G->numVertexes; i++)
 	{
-		for(j = i; j < G->numVertexes; j++)
+		for (j = i; j < G->numVertexes; j++)
 		{
-			G->arc[j][i] =G->arc[i][j];
+			G->arc[j][i] = G->arc[i][j];
 		}
 	}
-
 }
- 
-Boolean visited[MAXVEX]; /* ·ÃÎÊ±êÖ¾µÄÊı×é */
 
-/* ÁÚ½Ó¾ØÕóµÄÉî¶ÈÓÅÏÈµİ¹éËã·¨ */
+Boolean visited[MAXVEX]; /* è®¿é—®æ ‡å¿—çš„æ•°ç»„ */
+
+/* é‚»æ¥çŸ©é˜µçš„æ·±åº¦ä¼˜å…ˆé€’å½’ç®—æ³• */
 void DFS(MGraph G, int i)
 {
 	int j;
- 	visited[i] = TRUE;
- 	printf("%c ", G.vexs[i]);/* ´òÓ¡¶¥µã£¬Ò²¿ÉÒÔÆäËü²Ù×÷ */
-	for(j = 0; j < G.numVertexes; j++)
-		if(G.arc[i][j] == 1 && !visited[j])
- 			DFS(G, j);/* ¶ÔÎª·ÃÎÊµÄÁÚ½Ó¶¥µãµİ¹éµ÷ÓÃ */
+	visited[i] = TRUE;
+	printf("%c ", G.vexs[i]); /* æ‰“å°é¡¶ç‚¹ï¼Œä¹Ÿå¯ä»¥å…¶å®ƒæ“ä½œ */
+	for (j = 0; j < G.numVertexes; j++)
+		if (G.arc[i][j] == 1 && !visited[j])
+			DFS(G, j); /* å¯¹ä¸ºè®¿é—®çš„é‚»æ¥é¡¶ç‚¹é€’å½’è°ƒç”¨ */
 }
 
-/* ÁÚ½Ó¾ØÕóµÄÉî¶È±éÀú²Ù×÷ */
+/* é‚»æ¥çŸ©é˜µçš„æ·±åº¦éå†æ“ä½œ */
 void DFSTraverse(MGraph G)
 {
 	int i;
- 	for(i = 0; i < G.numVertexes; i++)
- 		visited[i] = FALSE; /* ³õÊ¼ËùÓĞ¶¥µã×´Ì¬¶¼ÊÇÎ´·ÃÎÊ¹ı×´Ì¬ */
-	for(i = 0; i < G.numVertexes; i++)
- 		if(!visited[i]) /* ¶ÔÎ´·ÃÎÊ¹ıµÄ¶¥µãµ÷ÓÃDFS£¬ÈôÊÇÁ¬Í¨Í¼£¬Ö»»áÖ´ĞĞÒ»´Î */ 
+	for (i = 0; i < G.numVertexes; i++)
+		visited[i] = FALSE; /* åˆå§‹æ‰€æœ‰é¡¶ç‚¹çŠ¶æ€éƒ½æ˜¯æœªè®¿é—®è¿‡çŠ¶æ€ */
+	for (i = 0; i < G.numVertexes; i++)
+		if (!visited[i]) /* å¯¹æœªè®¿é—®è¿‡çš„é¡¶ç‚¹è°ƒç”¨DFSï¼Œè‹¥æ˜¯è¿é€šå›¾ï¼Œåªä¼šæ‰§è¡Œä¸€æ¬¡ */
 			DFS(G, i);
 }
 
-/* ÁÚ½Ó¾ØÕóµÄ¹ã¶È±éÀúËã·¨ */
+/* é‚»æ¥çŸ©é˜µçš„å¹¿åº¦éå†ç®—æ³• */
 void BFSTraverse(MGraph G)
 {
 	int i, j;
 	Queue Q;
-	for(i = 0; i < G.numVertexes; i++)
-       	visited[i] = FALSE;
-    InitQueue(&Q);		/* ³õÊ¼»¯Ò»¸¨ÖúÓÃµÄ¶ÓÁĞ */
-    for(i = 0; i < G.numVertexes; i++)  /* ¶ÔÃ¿Ò»¸ö¶¥µã×öÑ­»· */
-    {
-		if (!visited[i])	/* ÈôÊÇÎ´·ÃÎÊ¹ı¾Í´¦Àí */
+	for (i = 0; i < G.numVertexes; i++)
+		visited[i] = FALSE;
+	InitQueue(&Q);						/* åˆå§‹åŒ–ä¸€è¾…åŠ©ç”¨çš„é˜Ÿåˆ— */
+	for (i = 0; i < G.numVertexes; i++) /* å¯¹æ¯ä¸€ä¸ªé¡¶ç‚¹åšå¾ªç¯ */
+	{
+		if (!visited[i]) /* è‹¥æ˜¯æœªè®¿é—®è¿‡å°±å¤„ç† */
 		{
-			visited[i]=TRUE;		/* ÉèÖÃµ±Ç°¶¥µã·ÃÎÊ¹ı */
-			printf("%c ", G.vexs[i]);/* ´òÓ¡¶¥µã£¬Ò²¿ÉÒÔÆäËü²Ù×÷ */
-			EnQueue(&Q,i);		/* ½«´Ë¶¥µãÈë¶ÓÁĞ */
-			while(!QueueEmpty(Q))	/* Èôµ±Ç°¶ÓÁĞ²»Îª¿Õ */
+			visited[i] = TRUE;		  /* è®¾ç½®å½“å‰é¡¶ç‚¹è®¿é—®è¿‡ */
+			printf("%c ", G.vexs[i]); /* æ‰“å°é¡¶ç‚¹ï¼Œä¹Ÿå¯ä»¥å…¶å®ƒæ“ä½œ */
+			EnQueue(&Q, i);			  /* å°†æ­¤é¡¶ç‚¹å…¥é˜Ÿåˆ— */
+			while (!QueueEmpty(Q))	  /* è‹¥å½“å‰é˜Ÿåˆ—ä¸ä¸ºç©º */
 			{
-				DeQueue(&Q,&i);	/* ½«¶Ó¶ÔÔªËØ³ö¶ÓÁĞ£¬¸³Öµ¸øi */
-				for(j=0;j<G.numVertexes;j++) 
-				{ 
-					/* ÅĞ¶ÏÆäËü¶¥µãÈôÓëµ±Ç°¶¥µã´æÔÚ±ßÇÒÎ´·ÃÎÊ¹ı  */
-					if(G.arc[i][j] == 1 && !visited[j]) 
-					{ 
- 						visited[j]=TRUE;			/* ½«ÕÒµ½µÄ´Ë¶¥µã±ê¼ÇÎªÒÑ·ÃÎÊ */
-						printf("%c ", G.vexs[j]);	/* ´òÓ¡¶¥µã */
-						EnQueue(&Q,j);				/* ½«ÕÒµ½µÄ´Ë¶¥µãÈë¶ÓÁĞ  */
-					} 
-				} 
+				DeQueue(&Q, &i); /* å°†é˜Ÿå¯¹å…ƒç´ å‡ºé˜Ÿåˆ—ï¼Œèµ‹å€¼ç»™i */
+				for (j = 0; j < G.numVertexes; j++)
+				{
+					/* åˆ¤æ–­å…¶å®ƒé¡¶ç‚¹è‹¥ä¸å½“å‰é¡¶ç‚¹å­˜åœ¨è¾¹ä¸”æœªè®¿é—®è¿‡  */
+					if (G.arc[i][j] == 1 && !visited[j])
+					{
+						visited[j] = TRUE;		  /* å°†æ‰¾åˆ°çš„æ­¤é¡¶ç‚¹æ ‡è®°ä¸ºå·²è®¿é—® */
+						printf("%c ", G.vexs[j]); /* æ‰“å°é¡¶ç‚¹ */
+						EnQueue(&Q, j);			  /* å°†æ‰¾åˆ°çš„æ­¤é¡¶ç‚¹å…¥é˜Ÿåˆ—  */
+					}
+				}
 			}
 		}
 	}
 }
 
-
 int main(void)
-{    
+{
 	MGraph G;
 	CreateMGraph(&G);
-	printf("\nÉî¶È±éÀú£º");
+	printf("\næ·±åº¦éå†ï¼š");
 	DFSTraverse(G);
-	printf("\n¹ã¶È±éÀú£º");
+	printf("\nå¹¿åº¦éå†ï¼š");
 	BFSTraverse(G);
 	return 0;
 }
-

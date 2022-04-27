@@ -3,7 +3,6 @@
 #include "sys/io.h"
 #include "math.h"
 #include "time.h"
-#include <ctype.h>
 
 #define OK 1
 #define ERROR 0
@@ -26,17 +25,13 @@ typedef struct
 void CreateMGraph(MGraph *G)
 {
 	int i, j, k, w;
-	char ch;
 
 	printf("输入顶点数和边数:\n");
-	scanf("%d %d", &(G->numNodes), &(G->numEdges)); /* 输入顶点数和边数 */
+	scanf("%d,%d", &G->numNodes, &G->numEdges); /* 输入顶点数和边数 */
 
-	printf("请输入顶点编号：\n");
 	for (i = 0; i < G->numNodes; i++) /* 读入顶点信息,建立顶点表 */
 	{
-		while ((ch = getchar()) && isspace(ch))
-			continue;
-		G->vexs[i] = ch;
+		scanf(&G->vexs[i]);
 	}
 	for (i = 0; i < G->numNodes; i++)
 	{
@@ -48,7 +43,7 @@ void CreateMGraph(MGraph *G)
 	for (k = 0; k < G->numEdges; k++) /* 读入numEdges条边，建立邻接矩阵 */
 	{
 		printf("输入边(vi,vj)上的下标i，下标j和权w:\n");
-		scanf("%d %d %d", &i, &j, &w); /* 输入边(vi,vj)上的权w */
+		scanf("%d,%d,%d", &i, &j, &w); /* 输入边(vi,vj)上的权w */
 		G->arc[i][j] = w;
 		G->arc[j][i] = G->arc[i][j]; /* 因为是无向图，矩阵对称 */
 	}

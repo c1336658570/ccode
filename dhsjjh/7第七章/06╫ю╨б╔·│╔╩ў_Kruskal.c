@@ -1,7 +1,7 @@
-#include "stdio.h"    
-#include "stdlib.h"   
-#include "io.h"  
-#include "math.h"  
+#include "stdio.h"
+#include "stdlib.h"
+#include "sys/io.h"
+#include "math.h"
 #include "time.h"
 
 #define OK 1
@@ -9,7 +9,7 @@
 #define TRUE 1
 #define FALSE 0
 
-typedef int Status;	/* StatusÊÇº¯ÊıµÄÀàĞÍ,ÆäÖµÊÇº¯Êı½á¹û×´Ì¬´úÂë£¬ÈçOKµÈ */
+typedef int Status; /* Statusæ˜¯å‡½æ•°çš„ç±»å‹,å…¶å€¼æ˜¯å‡½æ•°ç»“æœçŠ¶æ€ä»£ç ï¼Œå¦‚OKç­‰ */
 
 #define MAXEDGE 20
 #define MAXVEX 20
@@ -19,63 +19,62 @@ typedef struct
 {
 	int arc[MAXVEX][MAXVEX];
 	int numVertexes, numEdges;
-}MGraph;
+} MGraph;
 
 typedef struct
 {
 	int begin;
 	int end;
 	int weight;
-}Edge;   /* ¶Ô±ß¼¯Êı×éEdge½á¹¹µÄ¶¨Òå */
+} Edge; /* å¯¹è¾¹é›†æ•°ç»„Edgeç»“æ„çš„å®šä¹‰ */
 
-/* ¹¹¼şÍ¼ */
+/* æ„ä»¶å›¾ */
 void CreateMGraph(MGraph *G)
 {
 	int i, j;
 
-	/* printf("ÇëÊäÈë±ßÊıºÍ¶¥µãÊı:"); */
-	G->numEdges=15;
-	G->numVertexes=9;
+	/* printf("è¯·è¾“å…¥è¾¹æ•°å’Œé¡¶ç‚¹æ•°:"); */
+	G->numEdges = 15;
+	G->numVertexes = 9;
 
-	for (i = 0; i < G->numVertexes; i++)/* ³õÊ¼»¯Í¼ */
+	for (i = 0; i < G->numVertexes; i++) /* åˆå§‹åŒ–å›¾ */
 	{
-		for ( j = 0; j < G->numVertexes; j++)
+		for (j = 0; j < G->numVertexes; j++)
 		{
-			if (i==j)
-				G->arc[i][j]=0;
+			if (i == j)
+				G->arc[i][j] = 0;
 			else
 				G->arc[i][j] = G->arc[j][i] = INFINITY;
 		}
 	}
 
-	G->arc[0][1]=10;
-	G->arc[0][5]=11; 
-	G->arc[1][2]=18; 
-	G->arc[1][8]=12; 
-	G->arc[1][6]=16; 
-	G->arc[2][8]=8; 
-	G->arc[2][3]=22; 
-	G->arc[3][8]=21; 
-	G->arc[3][6]=24; 
-	G->arc[3][7]=16;
-	G->arc[3][4]=20;
-	G->arc[4][7]=7; 
-	G->arc[4][5]=26; 
-	G->arc[5][6]=17; 
-	G->arc[6][7]=19; 
+	G->arc[0][1] = 10;
+	G->arc[0][5] = 11;
+	G->arc[1][2] = 18;
+	G->arc[1][8] = 12;
+	G->arc[1][6] = 16;
+	G->arc[2][8] = 8;
+	G->arc[2][3] = 22;
+	G->arc[3][8] = 21;
+	G->arc[3][6] = 24;
+	G->arc[3][7] = 16;
+	G->arc[3][4] = 20;
+	G->arc[4][7] = 7;
+	G->arc[4][5] = 26;
+	G->arc[5][6] = 17;
+	G->arc[6][7] = 19;
 
-	for(i = 0; i < G->numVertexes; i++)
+	for (i = 0; i < G->numVertexes; i++)
 	{
-		for(j = i; j < G->numVertexes; j++)
+		for (j = i; j < G->numVertexes; j++)
 		{
-			G->arc[j][i] =G->arc[i][j];
+			G->arc[j][i] = G->arc[i][j];
 		}
 	}
-
 }
 
-/* ½»»»È¨Öµ ÒÔ¼°Í·ºÍÎ² */
-void Swapn(Edge *edges,int i, int j)
+/* äº¤æ¢æƒå€¼ ä»¥åŠå¤´å’Œå°¾ */
+void Swapn(Edge *edges, int i, int j)
 {
 	int temp;
 	temp = edges[i].begin;
@@ -89,13 +88,13 @@ void Swapn(Edge *edges,int i, int j)
 	edges[j].weight = temp;
 }
 
-/* ¶ÔÈ¨Öµ½øĞĞÅÅĞò */
-void sort(Edge edges[],MGraph *G)
+/* å¯¹æƒå€¼è¿›è¡Œæ’åº */
+void sort(Edge edges[], MGraph *G)
 {
 	int i, j;
-	for ( i = 0; i < G->numEdges; i++)
+	for (i = 0; i < G->numEdges; i++)
 	{
-		for ( j = i + 1; j < G->numEdges; j++)
+		for (j = i + 1; j < G->numEdges; j++)
 		{
 			if (edges[i].weight > edges[j].weight)
 			{
@@ -103,39 +102,38 @@ void sort(Edge edges[],MGraph *G)
 			}
 		}
 	}
-	printf("È¨ÅÅĞòÖ®ºóµÄÎª:\n");
+	printf("æƒæ’åºä¹‹åçš„ä¸º:\n");
 	for (i = 0; i < G->numEdges; i++)
 	{
 		printf("(%d, %d) %d\n", edges[i].begin, edges[i].end, edges[i].weight);
 	}
-
 }
 
-/* ²éÕÒÁ¬Ïß¶¥µãµÄÎ²²¿ÏÂ±ê */
+/* æŸ¥æ‰¾è¿çº¿é¡¶ç‚¹çš„å°¾éƒ¨ä¸‹æ ‡ */
 int Find(int *parent, int f)
 {
-	while ( parent[f] > 0)
+	while (parent[f] > 0)
 	{
 		f = parent[f];
 	}
 	return f;
 }
 
-/* Éú³É×îĞ¡Éú³ÉÊ÷ */
+/* ç”Ÿæˆæœ€å°ç”Ÿæˆæ ‘ */
 void MiniSpanTree_Kruskal(MGraph G)
 {
 	int i, j, n, m;
 	int k = 0;
-	int parent[MAXVEX];/* ¶¨ÒåÒ»Êı×éÓÃÀ´ÅĞ¶Ï±ßÓë±ßÊÇ·ñĞÎ³É»·Â· */
-	
-	Edge edges[MAXEDGE];/* ¶¨Òå±ß¼¯Êı×é,edgeµÄ½á¹¹Îªbegin,end,weight,¾ùÎªÕûĞÍ */
+	int parent[MAXVEX]; /* å®šä¹‰ä¸€æ•°ç»„ç”¨æ¥åˆ¤æ–­è¾¹ä¸è¾¹æ˜¯å¦å½¢æˆç¯è·¯ */
 
-	/* ÓÃÀ´¹¹½¨±ß¼¯Êı×é²¢ÅÅĞò********************* */
-	for ( i = 0; i < G.numVertexes-1; i++)
+	Edge edges[MAXEDGE]; /* å®šä¹‰è¾¹é›†æ•°ç»„,edgeçš„ç»“æ„ä¸ºbegin,end,weight,å‡ä¸ºæ•´å‹ */
+
+	/* ç”¨æ¥æ„å»ºè¾¹é›†æ•°ç»„å¹¶æ’åº********************* */
+	for (i = 0; i < G.numVertexes - 1; i++)
 	{
 		for (j = i + 1; j < G.numVertexes; j++)
 		{
-			if (G.arc[i][j]<INFINITY)
+			if (G.arc[i][j] < INFINITY)
 			{
 				edges[k].begin = i;
 				edges[k].end = j;
@@ -147,19 +145,18 @@ void MiniSpanTree_Kruskal(MGraph G)
 	sort(edges, &G);
 	/* ******************************************* */
 
-
 	for (i = 0; i < G.numVertexes; i++)
-		parent[i] = 0;	/* ³õÊ¼»¯Êı×éÖµÎª0 */
+		parent[i] = 0; /* åˆå§‹åŒ–æ•°ç»„å€¼ä¸º0 */
 
-	printf("´òÓ¡×îĞ¡Éú³ÉÊ÷£º\n");
-	for (i = 0; i < G.numEdges; i++)	/* Ñ­»·Ã¿Ò»Ìõ±ß */
+	printf("æ‰“å°æœ€å°ç”Ÿæˆæ ‘ï¼š\n");
+	for (i = 0; i < G.numEdges; i++) /* å¾ªç¯æ¯ä¸€æ¡è¾¹ */
 	{
-		n = Find(parent,edges[i].begin);
-		m = Find(parent,edges[i].end);
-		if (n != m) /* ¼ÙÈçnÓëm²»µÈ£¬ËµÃ÷´Ë±ßÃ»ÓĞÓëÏÖÓĞµÄÉú³ÉÊ÷ĞÎ³É»·Â· */
+		n = Find(parent, edges[i].begin);
+		m = Find(parent, edges[i].end);
+		if (n != m) /* å‡å¦‚nä¸mä¸ç­‰ï¼Œè¯´æ˜æ­¤è¾¹æ²¡æœ‰ä¸ç°æœ‰çš„ç”Ÿæˆæ ‘å½¢æˆç¯è·¯ */
 		{
-			parent[n] = m;	/* ½«´Ë±ßµÄ½áÎ²¶¥µã·ÅÈëÏÂ±êÎªÆğµãµÄparentÖĞ¡£ */
-							/* ±íÊ¾´Ë¶¥µãÒÑ¾­ÔÚÉú³ÉÊ÷¼¯ºÏÖĞ */
+			parent[n] = m; /* å°†æ­¤è¾¹çš„ç»“å°¾é¡¶ç‚¹æ”¾å…¥ä¸‹æ ‡ä¸ºèµ·ç‚¹çš„parentä¸­ã€‚ */
+			/* è¡¨ç¤ºæ­¤é¡¶ç‚¹å·²ç»åœ¨ç”Ÿæˆæ ‘é›†åˆä¸­ */
 			printf("(%d, %d) %d\n", edges[i].begin, edges[i].end, edges[i].weight);
 		}
 	}
