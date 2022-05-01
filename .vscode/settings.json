@@ -21,6 +21,7 @@
         "*.tcc": "c",
         "cstdio": "c",
         "functional": "c",
-        "B.C": "cpp"
+        "B.C": "cpp",
+        "typeinfo": "c"
     }
 }
