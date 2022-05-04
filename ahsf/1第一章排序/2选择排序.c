@@ -5,7 +5,7 @@
 	不稳定
 */
 
-# include <stdio.h>
+#include <stdio.h>
 
 void sort1(int *arr, int len);
 void sort2(int *arr, int len);
@@ -18,7 +18,7 @@ int main(void)
 	int arr[5] = {3, 2, 4, 5, 1};
 
 	sort4(arr, 5);
-	
+
 	traver(arr, 5);
 
 	return 0;
@@ -39,9 +39,9 @@ void sort1(int *arr, int len)
 {
 	int i, j;
 
-	for (i = 0; i < len-1; ++i)
+	for (i = 0; i < len - 1; ++i)
 	{
-		for (j = i+1; j < len; ++j)
+		for (j = i + 1; j < len; ++j)
 		{
 			if (arr[i] < arr[j])
 			{
@@ -56,25 +56,24 @@ void sort1(int *arr, int len)
 //优化1
 void sort2(int *arr, int len)
 {
-    int i, j;
+	int i, j;
 	int flag = 0;
 
-	for (i = 0; i < len-1; ++i)
+	for (i = 0; i < len - 1; ++i)
 	{
 		flag = i;
-		for (j = i+1; j < len; ++j)
+		for (j = i + 1; j < len; ++j)
 		{
-				if (arr[flag] < arr[j])
-				{
-						flag = j;
-				}
+			if (arr[flag] < arr[j])
+			{
+				flag = j;
+			}
 		}
 		if (i != flag)
 		{
 			arr[i] = arr[i] ^ arr[flag];
 			arr[flag] = arr[i] ^ arr[flag];
 			arr[i] = arr[i] ^ arr[flag];
-
 		}
 	}
 }
@@ -86,7 +85,7 @@ void sort3(int *a, int len)
 	begin = 0;
 	end = len - 1;
 
-	while(begin < end)
+	while (begin < end)
 	{
 		int maxi, mini;
 
@@ -111,7 +110,6 @@ void sort3(int *a, int len)
 		end--;
 		begin++;
 	}
-	
 }
 
 void swap(int *a, int *b)
