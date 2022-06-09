@@ -1,5 +1,5 @@
 /*
-    Ò©Æ·¹ÜÀíÏµÍ³
+    è¯å“ç®¡ç†ç³»ç»Ÿ
 */
 
 #include <stdio.h>
@@ -10,95 +10,95 @@
 
 typedef struct medicine
 {
-    char drug_name[100]; //Ò©Æ·Ãû
-    int drug_number;     //Ò©Æ·±àºÅ
-    char drug_type[50];  //Ò©Æ·ÀàĞÍ£¨ÖĞÒ©£¬Î÷Ò©£©
-    int cost;            //³É±¾
-    int price;           //ÊÛ¼Û
-    int num;             //Ò©Æ·Ê£ÓàÊıÁ¿
+    char drug_name[100]; //è¯å“å
+    int drug_number;     //è¯å“ç¼–å·
+    char drug_type[50];  //è¯å“ç±»å‹ï¼ˆä¸­è¯ï¼Œè¥¿è¯ï¼‰
+    int cost;            //æˆæœ¬
+    int price;           //å”®ä»·
+    int num;             //è¯å“å‰©ä½™æ•°é‡
 } medicine;
 
 struct med
 {
-    medicine medicine_array[500]; //´æ·ÅÒ©Æ·µÄÊı×é
-    int size;                     //Êı×éÒÑÊ¹ÓÃµÄ´óĞ¡
+    medicine medicine_array[500]; //å­˜æ”¾è¯å“çš„æ•°ç»„
+    int size;                     //æ•°ç»„å·²ä½¿ç”¨çš„å¤§å°
 } med;
 
-void showMenu();                //´òÓ¡²Ëµ¥
-void read_file();               //´ÓÎÄ¼şÖĞ¶ÁÈëÒ©Æ·ĞÅÏ¢
-void add_medicine();            //Ìí¼ÓÒ©Æ·ĞÅÏ¢
-void show_medicine();           //²é¿´ËùÓĞÒ©Æ·ĞÅÏ¢
-void drug_number_del();         //°´±àºÅÉ¾³ıÒ©Æ·ĞÅÏ¢
-void drug_name_del();           //°´ĞÕÃûÉ¾³ıÒ©Æ·ĞÅÏ¢
-void drug_number_revise();      //°´±àºÅĞŞ¸ÄÒ©Æ·ĞÅÏ¢
-void drug_name_revise();        //°´ĞÕÃûĞŞ¸ÄÒ©Æ·ĞÅÏ¢
-int drug_number_find(int num);  //°´±àºÅ²éÕÒÒ©Æ·ĞÅÏ¢£¬·µ»ØÏÂ±ê
-void show_drug_number_find();   //Êä³ö²éÕÒµ½µÄÒ©Æ·ĞÅÏ¢
-int drug_name_find(char *name); //°´ĞÕÃû²éÕÒÒ©Æ·ĞÅÏ¢£¬·µ»ØÏÂ±ê
-void show_drug_name_find();     //°´ĞÕÃû²éÕÒÒ©Æ·ĞÅÏ¢£¬²¢½«Ò©Æ·ĞÅÏ¢Êä³ö
-void drug_number_sort();        //°´±àºÅÅÅĞòÒ©Æ·ĞÅÏ¢
-void drug_name_sort();          //°´ĞÕÃûÅÅĞòÒ©Æ·ĞÅÏ¢
-void save();                    //±£´æÒ©Æ·ĞÅÏ¢µ½ÎÄ¼ş
+void showMenu();                //æ‰“å°èœå•
+void read_file();               //ä»æ–‡ä»¶ä¸­è¯»å…¥è¯å“ä¿¡æ¯
+void add_medicine();            //æ·»åŠ è¯å“ä¿¡æ¯
+void show_medicine();           //æŸ¥çœ‹æ‰€æœ‰è¯å“ä¿¡æ¯
+void drug_number_del();         //æŒ‰ç¼–å·åˆ é™¤è¯å“ä¿¡æ¯
+void drug_name_del();           //æŒ‰å§“ååˆ é™¤è¯å“ä¿¡æ¯
+void drug_number_revise();      //æŒ‰ç¼–å·ä¿®æ”¹è¯å“ä¿¡æ¯
+void drug_name_revise();        //æŒ‰å§“åä¿®æ”¹è¯å“ä¿¡æ¯
+int drug_number_find(int num);  //æŒ‰ç¼–å·æŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œè¿”å›ä¸‹æ ‡
+void show_drug_number_find();   //è¾“å‡ºæŸ¥æ‰¾åˆ°çš„è¯å“ä¿¡æ¯
+int drug_name_find(char *name); //æŒ‰å§“åæŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œè¿”å›ä¸‹æ ‡
+void show_drug_name_find();     //æŒ‰å§“åæŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œå¹¶å°†è¯å“ä¿¡æ¯è¾“å‡º
+void drug_number_sort();        //æŒ‰ç¼–å·æ’åºè¯å“ä¿¡æ¯
+void drug_name_sort();          //æŒ‰å§“åæ’åºè¯å“ä¿¡æ¯
+void save();                    //ä¿å­˜è¯å“ä¿¡æ¯åˆ°æ–‡ä»¶
 
 int main(int argc, char *argv[])
 {
     int select = 15;
 
-    read_file(); //¶ÁÈ¡ÎÄ¼şÖĞµÄĞÅÏ¢
+    read_file(); //è¯»å–æ–‡ä»¶ä¸­çš„ä¿¡æ¯
 
     while (1)
     {
-        showMenu(); //´òÓ¡²Ëµ¥
+        showMenu(); //æ‰“å°èœå•
         while (scanf("%d", &select) != 1)
         {
-            printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
-            rewind(stdin); //½«ÊäÈëÖ¸ÕëÖÃÓÚÊäÈëÁ÷Ê×²¿
+            printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
+            rewind(stdin); //å°†è¾“å…¥æŒ‡é’ˆç½®äºè¾“å…¥æµé¦–éƒ¨
         }
 
         switch (select)
         {
         case 0:
-            //ÍË³ö³ÌĞò
+            //é€€å‡ºç¨‹åº
             exit(0);
             break;
         case 1:
-            //Ìí¼ÓÒ©Æ·ĞÅÏ¢
+            //æ·»åŠ è¯å“ä¿¡æ¯
             add_medicine();
             break;
         case 2:
-            //²é¿´ËùÓĞÒ©Æ·ĞÅÏ¢
+            //æŸ¥çœ‹æ‰€æœ‰è¯å“ä¿¡æ¯
             show_medicine();
             break;
         case 3:
-            //°´±àºÅÉ¾³ıÒ©Æ·ĞÅÏ¢
+            //æŒ‰ç¼–å·åˆ é™¤è¯å“ä¿¡æ¯
             drug_number_del();
             break;
         case 4:
-            //°´ĞÕÃûÉ¾³ıÒ©Æ·ĞÅÏ¢
+            //æŒ‰å§“ååˆ é™¤è¯å“ä¿¡æ¯
             drug_name_del();
             break;
         case 5:
-            //°´±àºÅĞŞ¸ÄÒ©Æ·ĞÅÏ¢
+            //æŒ‰ç¼–å·ä¿®æ”¹è¯å“ä¿¡æ¯
             drug_number_revise();
             break;
         case 6:
-            //°´ĞÕÃûĞŞ¸ÄÒ©Æ·ĞÅÏ¢
+            //æŒ‰å§“åä¿®æ”¹è¯å“ä¿¡æ¯
             drug_name_revise();
             break;
         case 7:
-            //°´±àºÅ²éÕÒÒ©Æ·ĞÅÏ¢£¬²¢½«Ò©Æ·ĞÅÏ¢Êä³ö
+            //æŒ‰ç¼–å·æŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œå¹¶å°†è¯å“ä¿¡æ¯è¾“å‡º
             show_drug_number_find();
             break;
         case 8:
-            //°´ĞÕÃû²éÕÒÒ©Æ·ĞÅÏ¢£¬²¢½«Ò©Æ·ĞÅÏ¢Êä³ö
+            //æŒ‰å§“åæŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œå¹¶å°†è¯å“ä¿¡æ¯è¾“å‡º
             show_drug_name_find();
             break;
         case 9:
-            //°´±àºÅÅÅĞòÒ©Æ·ĞÅÏ¢
+            //æŒ‰ç¼–å·æ’åºè¯å“ä¿¡æ¯
             drug_number_sort();
             break;
         case 10:
-            //°´ĞÕÃûÅÅĞòÒ©Æ·ĞÅÏ¢
+            //æŒ‰å§“åæ’åºè¯å“ä¿¡æ¯
             drug_name_sort();
             break;
         }
@@ -107,27 +107,27 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-//´òÓ¡²Ëµ¥
+//æ‰“å°èœå•
 void showMenu()
 {
     printf("-------------------------------------------\n");
-    printf("»¶Ó­Ê¹ÓÃÒ©Æ·¹ÜÀíÏµÍ³£¡\n");
-    printf("ÇëÊäÈëÄãÒªÑ¡ÔñµÄ±àºÅ£º\n");
-    printf("1¡¢Ìí¼ÓÒ©Æ·ĞÅÏ¢\n");
-    printf("2¡¢²é¿´ËùÓĞÒ©Æ·ĞÅÏ¢\n");
-    printf("3¡¢°´±àºÅÉ¾³ıÒ©Æ·ĞÅÏ¢\n");
-    printf("4¡¢°´ĞÕÃûÉ¾³ıÒ©Æ·ĞÅÏ¢\n");
-    printf("5¡¢°´±àºÅĞŞ¸ÄÒ©Æ·ĞÅÏ¢\n");
-    printf("6¡¢°´ĞÕÃûĞŞ¸ÄÒ©Æ·ĞÅÏ¢\n");
-    printf("7¡¢°´±àºÅ²éÕÒÒ©Æ·ĞÅÏ¢\n");
-    printf("8¡¢°´ĞÕÃû²éÕÒÒ©Æ·ĞÅÏ¢\n");
-    printf("9¡¢°´±àºÅÅÅĞòÒ©Æ·ĞÅÏ¢\n");
-    printf("10¡¢°´ĞÕÃûÅÅĞòÒ©Æ·ĞÅÏ¢\n");
-    printf("0¡¢ÍË³ö±¾ÏµÍ³\n");
+    printf("æ¬¢è¿ä½¿ç”¨è¯å“ç®¡ç†ç³»ç»Ÿï¼\n");
+    printf("è¯·è¾“å…¥ä½ è¦é€‰æ‹©çš„ç¼–å·ï¼š\n");
+    printf("1ã€æ·»åŠ è¯å“ä¿¡æ¯\n");
+    printf("2ã€æŸ¥çœ‹æ‰€æœ‰è¯å“ä¿¡æ¯\n");
+    printf("3ã€æŒ‰ç¼–å·åˆ é™¤è¯å“ä¿¡æ¯\n");
+    printf("4ã€æŒ‰å§“ååˆ é™¤è¯å“ä¿¡æ¯\n");
+    printf("5ã€æŒ‰ç¼–å·ä¿®æ”¹è¯å“ä¿¡æ¯\n");
+    printf("6ã€æŒ‰å§“åä¿®æ”¹è¯å“ä¿¡æ¯\n");
+    printf("7ã€æŒ‰ç¼–å·æŸ¥æ‰¾è¯å“ä¿¡æ¯\n");
+    printf("8ã€æŒ‰å§“åæŸ¥æ‰¾è¯å“ä¿¡æ¯\n");
+    printf("9ã€æŒ‰ç¼–å·æ’åºè¯å“ä¿¡æ¯\n");
+    printf("10ã€æŒ‰å§“åæ’åºè¯å“ä¿¡æ¯\n");
+    printf("0ã€é€€å‡ºæœ¬ç³»ç»Ÿ\n");
     printf("-------------------------------------------\n");
 }
 
-//´ÓÎÄ¼şÖĞ¶ÁÈëÒ©Æ·ĞÅÏ¢
+//ä»æ–‡ä»¶ä¸­è¯»å…¥è¯å“ä¿¡æ¯
 void read_file()
 {
     FILE *fp = fopen(MEDICINE_FILE_NAME, "r");
@@ -150,27 +150,27 @@ void read_file()
     }
 }
 
-//Ìí¼ÓÒ©Æ·ĞÅÏ¢
+//æ·»åŠ è¯å“ä¿¡æ¯
 void add_medicine()
 {
     int flag = 0;
-    int num; //±£´æ±àºÅÓÃÓÚÈ¥ÖØ
-    printf("ÇëÊäÈëÄãÒªÌí¼ÓµÄÒ©Æ·µÄÊıÁ¿\n");
+    int num; //ä¿å­˜ç¼–å·ç”¨äºå»é‡
+    printf("è¯·è¾“å…¥ä½ è¦æ·»åŠ çš„è¯å“çš„æ•°é‡\n");
     int n, i;
     while (scanf("%d", &n) != 1 || n < 0)
     {
-        printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
         rewind(stdin);
     }
 
-    //ĞÕÃû   |   ±àºÅ   |   ÀàĞÍ   |   ³É±¾   |   ÊÛ¼Û   |   ÊıÁ¿
+    //å§“å   |   ç¼–å·   |   ç±»å‹   |   æˆæœ¬   |   å”®ä»·   |   æ•°é‡
     for (i = 0; i < n; ++i)
     {
-        printf("µÚ%d¸öÒ©Æ·µÄĞÅÏ¢\n", i + 1);
+        printf("ç¬¬%dä¸ªè¯å“çš„ä¿¡æ¯\n", i + 1);
         printf("--------------------\n");
-        printf("ÇëÊäÈëÒ©Æ·ĞÕÃû\n");
+        printf("è¯·è¾“å…¥è¯å“å§“å\n");
         scanf("%s", &med.medicine_array[med.size].drug_name);
-        printf("ÇëÊäÈëÒ©Æ·±àºÅ\n");
+        printf("è¯·è¾“å…¥è¯å“ç¼–å·\n");
         med.medicine_array[med.size].drug_number = 0;
         do
         {
@@ -178,7 +178,7 @@ void add_medicine()
             int ret = drug_number_find(num);
             if (ret != -1)
             {
-                printf("¸Ã±àºÅÒÑ¾­´æÔÚ£¬ÇëÖØĞÂÊäÈë\n");
+                printf("è¯¥ç¼–å·å·²ç»å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥\n");
             }
             else
             {
@@ -186,26 +186,26 @@ void add_medicine()
                 break;
             }
         } while (1);
-        printf("ÇëÊäÈëÒ©Æ·ÀàĞÍ\n");
+        printf("è¯·è¾“å…¥è¯å“ç±»å‹\n");
         scanf("%s", &med.medicine_array[med.size].drug_type);
-        printf("ÇëÊäÈëÒ©Æ·³É±¾\n");
+        printf("è¯·è¾“å…¥è¯å“æˆæœ¬\n");
         scanf("%d", &med.medicine_array[med.size].cost);
-        printf("ÇëÊäÈëÒ©Æ·ÊÛ¼Û\n");
+        printf("è¯·è¾“å…¥è¯å“å”®ä»·\n");
         scanf("%d", &med.medicine_array[med.size].price);
-        printf("ÇëÊäÈëÒ©Æ·ÊıÁ¿\n");
+        printf("è¯·è¾“å…¥è¯å“æ•°é‡\n");
         scanf("%d", &med.medicine_array[med.size].num);
         flag = 1;
 
         med.size++;
     }
     if (flag == 1)
-        save(); //±£´æµ½ÎÄ¼ş
+        save(); //ä¿å­˜åˆ°æ–‡ä»¶
 }
 
-//²é¿´ËùÓĞÒ©Æ·ĞÅÏ¢
+//æŸ¥çœ‹æ‰€æœ‰è¯å“ä¿¡æ¯
 void show_medicine()
 {
-    printf("   ĞÕÃû   |   ±àºÅ   |   ÀàĞÍ   |   ³É±¾   |   ÊÛ¼Û   |   ÊıÁ¿\n");
+    printf("   å§“å   |   ç¼–å·   |   ç±»å‹   |   æˆæœ¬   |   å”®ä»·   |   æ•°é‡\n");
 
     int i;
     for (i = 0; i < med.size; ++i)
@@ -219,27 +219,27 @@ void show_medicine()
     }
 }
 
-//°´±àºÅÉ¾³ıÒ©Æ·ĞÅÏ¢
+//æŒ‰ç¼–å·åˆ é™¤è¯å“ä¿¡æ¯
 void drug_number_del()
 {
     int flag = 0;
     int i, j, n, number;
 
-    printf("ÇëÊäÈëÄãÒªÉ¾³ıµÄÒ©Æ·ÊıÁ¿\n");
+    printf("è¯·è¾“å…¥ä½ è¦åˆ é™¤çš„è¯å“æ•°é‡\n");
     while (scanf("%d", &n) != 1 || n < 0)
     {
-        printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
         rewind(stdin);
     }
 
     for (i = 0; i < n; ++i)
     {
-        printf("µÚ%d¸öÒ©Æ·µÄ±àºÅ\n", i + 1);
+        printf("ç¬¬%dä¸ªè¯å“çš„ç¼–å·\n", i + 1);
         printf("--------------------\n");
-        printf("ÇëÊäÈëÒªÉ¾³ıµÄÒ©Æ·±àºÅ\n");
+        printf("è¯·è¾“å…¥è¦åˆ é™¤çš„è¯å“ç¼–å·\n");
         while (scanf("%d", &number) != 1)
         {
-            printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+            printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
             rewind(stdin);
         }
 
@@ -247,7 +247,7 @@ void drug_number_del()
         if (ret != -1)
         {
             flag = 1;
-            printf("É¾³ı³É¹¦£¬É¾³ıµÄĞÅÏ¢Îª\n");
+            printf("åˆ é™¤æˆåŠŸï¼Œåˆ é™¤çš„ä¿¡æ¯ä¸º\n");
             printf("%-11s%-11d%-11s%-11d%-11d%-11d\n", med.medicine_array[ret].drug_name,
                    med.medicine_array[ret].drug_number,
                    med.medicine_array[ret].drug_type,
@@ -262,7 +262,7 @@ void drug_number_del()
         }
         else
         {
-            printf("É¾³ıÊ§°Ü\n");
+            printf("åˆ é™¤å¤±è´¥\n");
         }
     }
 
@@ -270,32 +270,32 @@ void drug_number_del()
         save();
 }
 
-//°´ĞÕÃûÉ¾³ıÒ©Æ·ĞÅÏ¢
+//æŒ‰å§“ååˆ é™¤è¯å“ä¿¡æ¯
 void drug_name_del()
 {
     int flag = 0;
     int i, j, n;
     char name[100];
 
-    printf("ÇëÊäÈëÄãÒªÉ¾³ıµÄÒ©Æ·ÊıÁ¿\n");
+    printf("è¯·è¾“å…¥ä½ è¦åˆ é™¤çš„è¯å“æ•°é‡\n");
     while (scanf("%d", &n) != 1 || n < 0)
     {
-        printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
         rewind(stdin);
     }
 
     for (i = 0; i < n; ++i)
     {
-        printf("µÚ%d¸öÒ©Æ·µÄĞÕÃû\n", i + 1);
+        printf("ç¬¬%dä¸ªè¯å“çš„å§“å\n", i + 1);
         printf("--------------------\n");
-        printf("ÇëÊäÈëÒªÉ¾³ıµÄÒ©Æ·ĞÕÃû\n");
+        printf("è¯·è¾“å…¥è¦åˆ é™¤çš„è¯å“å§“å\n");
         scanf("%s", name);
 
         int ret = drug_name_find(name);
         if (ret != -1)
         {
             flag = 1;
-            printf("É¾³ı³É¹¦£¬É¾³ıµÄĞÅÏ¢Îª\n");
+            printf("åˆ é™¤æˆåŠŸï¼Œåˆ é™¤çš„ä¿¡æ¯ä¸º\n");
             printf("%-11s%-11d%-11s%-11d%-11d%-11d\n", med.medicine_array[ret].drug_name,
                    med.medicine_array[ret].drug_number,
                    med.medicine_array[ret].drug_type,
@@ -310,7 +310,7 @@ void drug_name_del()
         }
         else
         {
-            printf("É¾³ıÊ§°Ü\n");
+            printf("åˆ é™¤å¤±è´¥\n");
         }
     }
 
@@ -318,28 +318,28 @@ void drug_name_del()
         save();
 }
 
-//°´±àºÅĞŞ¸ÄÒ©Æ·ĞÅÏ¢
+//æŒ‰ç¼–å·ä¿®æ”¹è¯å“ä¿¡æ¯
 void drug_number_revise()
 {
     int flag = 0;
-    int i, j, n, number; //±£´æÒªĞŞ¸ÄµÄ±àºÅ
-    int num;             //±£´æĞÂ±àºÅ£¬ÓÃÓÚÈ¥ÖØ
+    int i, j, n, number; //ä¿å­˜è¦ä¿®æ”¹çš„ç¼–å·
+    int num;             //ä¿å­˜æ–°ç¼–å·ï¼Œç”¨äºå»é‡
 
-    printf("ÇëÊäÈëÄãÒªĞŞ¸ÄµÄÒ©Æ·ÊıÁ¿\n");
+    printf("è¯·è¾“å…¥ä½ è¦ä¿®æ”¹çš„è¯å“æ•°é‡\n");
     while (scanf("%d", &n) != 1 || n < 0)
     {
-        printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
         rewind(stdin);
     }
 
     for (i = 0; i < n; ++i)
     {
-        printf("µÚ%d¸öÒ©Æ·µÄ±àºÅ\n", i + 1);
+        printf("ç¬¬%dä¸ªè¯å“çš„ç¼–å·\n", i + 1);
         printf("--------------------\n");
-        printf("ÇëÊäÈëÒªĞŞ¸ÄµÄÒ©Æ·±àºÅ\n");
+        printf("è¯·è¾“å…¥è¦ä¿®æ”¹çš„è¯å“ç¼–å·\n");
         while (scanf("%d", &number) != 1)
         {
-            printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+            printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
             rewind(stdin);
         }
 
@@ -347,17 +347,17 @@ void drug_number_revise()
         if (ret != -1)
         {
             flag = 1;
-            printf("ÕÒµ½¸Ã±àºÅµÄÒ©Æ·£¬¸ÃÒ©Æ·ĞÅÏ¢Îª\n");
+            printf("æ‰¾åˆ°è¯¥ç¼–å·çš„è¯å“ï¼Œè¯¥è¯å“ä¿¡æ¯ä¸º\n");
             printf("%-11s%-11d%-11s%-11d%-11d%-11d\n", med.medicine_array[ret].drug_name,
                    med.medicine_array[ret].drug_number,
                    med.medicine_array[ret].drug_type,
                    med.medicine_array[ret].cost,
                    med.medicine_array[ret].price,
                    med.medicine_array[ret].num);
-            printf("ÇëÊäÈëĞÂĞÅÏ¢\n");
-            printf("ÇëÊäÈëÒ©Æ·ĞÂĞÕÃû\n");
+            printf("è¯·è¾“å…¥æ–°ä¿¡æ¯\n");
+            printf("è¯·è¾“å…¥è¯å“æ–°å§“å\n");
             scanf("%s", &med.medicine_array[ret].drug_name);
-            printf("ÇëÊäÈëÒ©Æ·±àºÅ\n");
+            printf("è¯·è¾“å…¥è¯å“ç¼–å·\n");
             med.medicine_array[ret].drug_number = 0;
             do
             {
@@ -365,7 +365,7 @@ void drug_number_revise()
                 int ret = drug_number_find(num);
                 if (ret != -1)
                 {
-                    printf("¸Ã±àºÅÒÑ¾­´æÔÚ£¬ÇëÖØĞÂÊäÈë\n");
+                    printf("è¯¥ç¼–å·å·²ç»å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥\n");
                 }
                 else
                 {
@@ -373,19 +373,19 @@ void drug_number_revise()
                     break;
                 }
             } while (1);
-            printf("ÇëÊäÈëÒ©Æ·ÀàĞÍ\n");
+            printf("è¯·è¾“å…¥è¯å“ç±»å‹\n");
             scanf("%s", &med.medicine_array[ret].drug_type);
-            printf("ÇëÊäÈëÒ©Æ·³É±¾\n");
+            printf("è¯·è¾“å…¥è¯å“æˆæœ¬\n");
             scanf("%d", &med.medicine_array[ret].cost);
-            printf("ÇëÊäÈëÒ©Æ·ÊÛ¼Û\n");
+            printf("è¯·è¾“å…¥è¯å“å”®ä»·\n");
             scanf("%d", &med.medicine_array[ret].price);
-            printf("ÇëÊäÈëÒ©Æ·ÊıÁ¿\n");
+            printf("è¯·è¾“å…¥è¯å“æ•°é‡\n");
             scanf("%d", &med.medicine_array[ret].num);
-            printf("ĞŞ¸Ä³É¹¦£¡\n");
+            printf("ä¿®æ”¹æˆåŠŸï¼\n");
         }
         else
         {
-            printf("Î´ÕÒµ½¸Ã±àºÅµÄÒ©Æ·\n");
+            printf("æœªæ‰¾åˆ°è¯¥ç¼–å·çš„è¯å“\n");
         }
     }
 
@@ -393,43 +393,43 @@ void drug_number_revise()
         save();
 }
 
-//°´ĞÕÃûĞŞ¸ÄÒ©Æ·ĞÅÏ¢
+//æŒ‰å§“åä¿®æ”¹è¯å“ä¿¡æ¯
 void drug_name_revise()
 {
     int flag = 0;
     int i, j, n;
     char name[100];
-    int num; //±£´æ±àºÅ£¬ÓÃÓÚÈ¥ÖØ
+    int num; //ä¿å­˜ç¼–å·ï¼Œç”¨äºå»é‡
 
-    printf("ÇëÊäÈëÄãÒªĞŞ¸ÄµÄÒ©Æ·ÊıÁ¿\n");
+    printf("è¯·è¾“å…¥ä½ è¦ä¿®æ”¹çš„è¯å“æ•°é‡\n");
     while (scanf("%d", &n) != 1 || n < 0)
     {
-        printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
         rewind(stdin);
     }
 
     for (i = 0; i < n; ++i)
     {
-        printf("µÚ%d¸öÒ©Æ·µÄĞÕÃû\n", i + 1);
+        printf("ç¬¬%dä¸ªè¯å“çš„å§“å\n", i + 1);
         printf("--------------------\n");
-        printf("ÇëÊäÈëÒªĞŞ¸ÄµÄÒ©Æ·ĞÕÃû\n");
+        printf("è¯·è¾“å…¥è¦ä¿®æ”¹çš„è¯å“å§“å\n");
         scanf("%s", &name);
 
         int ret = drug_name_find(name);
         if (ret != -1)
         {
             flag = 1;
-            printf("ÕÒµ½¸ÃĞÕÃûµÄÒ©Æ·£¬¸ÃÒ©Æ·ĞÅÏ¢Îª\n");
+            printf("æ‰¾åˆ°è¯¥å§“åçš„è¯å“ï¼Œè¯¥è¯å“ä¿¡æ¯ä¸º\n");
             printf("%-11s%-11d%-11s%-11d%-11d%-11d\n", med.medicine_array[ret].drug_name,
                    med.medicine_array[ret].drug_number,
                    med.medicine_array[ret].drug_type,
                    med.medicine_array[ret].cost,
                    med.medicine_array[ret].price,
                    med.medicine_array[ret].num);
-            printf("ÇëÊäÈëĞÂĞÅÏ¢\n");
-            printf("ÇëÊäÈëÒ©Æ·ĞÂĞÕÃû\n");
+            printf("è¯·è¾“å…¥æ–°ä¿¡æ¯\n");
+            printf("è¯·è¾“å…¥è¯å“æ–°å§“å\n");
             scanf("%s", &med.medicine_array[ret].drug_name);
-            printf("ÇëÊäÈëÒ©Æ·±àºÅ\n");
+            printf("è¯·è¾“å…¥è¯å“ç¼–å·\n");
             med.medicine_array[ret].drug_number = 0;
             do
             {
@@ -437,7 +437,7 @@ void drug_name_revise()
                 int ret = drug_number_find(num);
                 if (ret != -1)
                 {
-                    printf("¸Ã±àºÅÒÑ¾­´æÔÚ£¬ÇëÖØĞÂÊäÈë\n");
+                    printf("è¯¥ç¼–å·å·²ç»å­˜åœ¨ï¼Œè¯·é‡æ–°è¾“å…¥\n");
                 }
                 else
                 {
@@ -445,19 +445,19 @@ void drug_name_revise()
                     break;
                 }
             } while (1);
-            printf("ÇëÊäÈëÒ©Æ·ÀàĞÍ\n");
+            printf("è¯·è¾“å…¥è¯å“ç±»å‹\n");
             scanf("%s", &med.medicine_array[ret].drug_type);
-            printf("ÇëÊäÈëÒ©Æ·³É±¾\n");
+            printf("è¯·è¾“å…¥è¯å“æˆæœ¬\n");
             scanf("%d", &med.medicine_array[ret].cost);
-            printf("ÇëÊäÈëÒ©Æ·ÊÛ¼Û\n");
+            printf("è¯·è¾“å…¥è¯å“å”®ä»·\n");
             scanf("%d", &med.medicine_array[ret].price);
-            printf("ÇëÊäÈëÒ©Æ·ÊıÁ¿\n");
+            printf("è¯·è¾“å…¥è¯å“æ•°é‡\n");
             scanf("%d", &med.medicine_array[ret].num);
-            printf("ĞŞ¸Ä³É¹¦£¡\n");
+            printf("ä¿®æ”¹æˆåŠŸï¼\n");
         }
         else
         {
-            printf("Î´ÕÒµ½¸ÃĞÕÃûµÄÒ©Æ·\n");
+            printf("æœªæ‰¾åˆ°è¯¥å§“åçš„è¯å“\n");
         }
     }
 
@@ -465,7 +465,7 @@ void drug_name_revise()
         save();
 }
 
-//°´±àºÅ²éÕÒÒ©Æ·ĞÅÏ¢£¬·µ»ØÏÂ±ê
+//æŒ‰ç¼–å·æŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œè¿”å›ä¸‹æ ‡
 int drug_number_find(int number)
 {
     int i;
@@ -481,15 +481,15 @@ int drug_number_find(int number)
     return -1;
 }
 
-//Êä³ö²éÕÒµ½µÄÒ©Æ·ĞÅÏ¢
+//è¾“å‡ºæŸ¥æ‰¾åˆ°çš„è¯å“ä¿¡æ¯
 void show_drug_number_find()
 {
     int number;
 
-    printf("ÇëÊäÈëÒª²éÕÒµÄ±àºÅ±àºÅ\n");
+    printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„ç¼–å·ç¼–å·\n");
     while (scanf("%d", &number) != 1)
     {
-        printf("ÊäÈëÓĞÎó£¬ÇëÖØĞÂÊäÈë\n");
+        printf("è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n");
         rewind(stdin);
     }
 
@@ -497,11 +497,11 @@ void show_drug_number_find()
 
     if (ret == -1)
     {
-        printf("Î´ÕÒµ½\n");
+        printf("æœªæ‰¾åˆ°\n");
     }
     else
     {
-        printf("ÕÒµ½ÁË£¬ĞÅÏ¢Îª\n");
+        printf("æ‰¾åˆ°äº†ï¼Œä¿¡æ¯ä¸º\n");
         printf("%-11s%-11d%-11s%-11d%-11d%-11d\n", med.medicine_array[ret].drug_name,
                med.medicine_array[ret].drug_number,
                med.medicine_array[ret].drug_type,
@@ -511,7 +511,7 @@ void show_drug_number_find()
     }
 }
 
-//°´ĞÕÃû²éÕÒÒ©Æ·ĞÅÏ¢
+//æŒ‰å§“åæŸ¥æ‰¾è¯å“ä¿¡æ¯
 int drug_name_find(char *name)
 {
     int i;
@@ -525,22 +525,22 @@ int drug_name_find(char *name)
     return -1;
 }
 
-//°´ĞÕÃû²éÕÒÒ©Æ·ĞÅÏ¢£¬²¢½«Ò©Æ·ĞÅÏ¢Êä³ö
+//æŒ‰å§“åæŸ¥æ‰¾è¯å“ä¿¡æ¯ï¼Œå¹¶å°†è¯å“ä¿¡æ¯è¾“å‡º
 void show_drug_name_find()
 {
     char name[100];
 
-    printf("ÇëÊäÈëÄãÒª²éÕÒµÄÒ©Æ·ĞÕÃû\n");
+    printf("è¯·è¾“å…¥ä½ è¦æŸ¥æ‰¾çš„è¯å“å§“å\n");
     scanf("%s", name);
 
     int ret = drug_name_find(name);
     if (ret == -1)
     {
-        printf("Î´ÕÒµ½\n");
+        printf("æœªæ‰¾åˆ°\n");
     }
     else
     {
-        printf("ÕÒµ½ÁË£¬Ò©Æ·ĞÅÏ¢Îª\n");
+        printf("æ‰¾åˆ°äº†ï¼Œè¯å“ä¿¡æ¯ä¸º\n");
         printf("%-11s%-11d%-11s%-11d%-11d%-11d\n", med.medicine_array[ret].drug_name,
                med.medicine_array[ret].drug_number,
                med.medicine_array[ret].drug_type,
@@ -550,17 +550,17 @@ void show_drug_name_find()
     }
 }
 
-//°´±àºÅÅÅĞòÒ©Æ·ĞÅÏ¢
+//æŒ‰ç¼–å·æ’åºè¯å“ä¿¡æ¯
 void drug_number_sort()
 {
 }
 
-//°´ĞÕÃûÅÅĞòÒ©Æ·ĞÅÏ¢
+//æŒ‰å§“åæ’åºè¯å“ä¿¡æ¯
 void drug_name_sort()
 {
 }
 
-//±£´æÒ©Æ·ĞÅÏ¢µ½ÎÄ¼ş
+//ä¿å­˜è¯å“ä¿¡æ¯åˆ°æ–‡ä»¶
 void save()
 {
     int i;
