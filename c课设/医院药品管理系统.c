@@ -4,9 +4,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
-#define MEDICINE_FILE_NAME "medicine.txt"
+#define MEDICINE_FILE "medicine.txt"
+#define USER_FILE "user.txt"
 
 typedef struct medicine
 {
@@ -24,8 +26,30 @@ struct med
     int size;                     //数组已使用的大小
 } med;
 
+typedef struct user_f
+{
+    char name[50];   //账号
+    char passwd[50]; //密码
+} user_f;
+
+typedef struct user
+{
+    user_f userarray[50];
+    int size; //管理员个数
+} user;
+
+//与登录相关函数
+void login_menu(user *userarr);     //登录菜单
+void reg(user *userearr);           //注册账号
+bool login(user *userarr);          //登录账号
+void revise_passwd(user *userarr);  //修改密码
+void get_passwd(user *userarr);     //找回密码
+void save_user(user *userarr);      //保存账号到文件
+void read_user_file(user *userarr); //从文件中读取管理员信息
+
+//与药品操作相关函数
 void showMenu();                //打印菜单
-void read_file();               //从文件中读入药品信息
+void read_medicine_file();      //从文件中读入药品信息
 void add_medicine();            //添加药品信息
 void show_medicine();           //查看所有药品信息
 void drug_number_del();         //按编号删除药品信息
@@ -38,18 +62,23 @@ int drug_name_find(char *name); //按姓名查找药品信息，返回下标
 void show_drug_name_find();     //按姓名查找药品信息，并将药品信息输出
 void drug_number_sort();        //按编号排序药品信息
 void drug_name_sort();          //按姓名排序药品信息
-void save();                    //保存药品信息到文件
+void save_medicine();           //保存药品信息到文件
 
 int main(int argc, char *argv[])
 {
     int select = 15;
+    user userarr;
 
-    read_file(); //读取文件中的信息
+    read_user_file(&userarr); //从文件读管理员信息
+
+    login_menu(&userarr); //登录账号菜单
+
+    read_medicine_file(); //读取文件中药品的信息
 
     while (1)
     {
         showMenu(); //打印菜单
-        while (scanf("%d", &select) != 1)
+        while (scanf("%d", &select) != 1 || select < 0 || select > 10)
         {
             printf("输入有误，请重新输入\n");
             rewind(stdin); //将输入指针置于输入流首部
@@ -107,30 +136,212 @@ int main(int argc, char *argv[])
     return 0;
 }
 
+//登录菜单
+void login_menu(user *userarr)
+{
+    while (1)
+    {
+        printf("\033[35m欢迎使用药品管理系统！\033[0m\n");
+        printf("\033[35m1、注册账号\033[0m\n");
+        printf("\033[35m2、登录账号\033[0m\n");
+        printf("\033[35m3、修改密码\033[0m\n");
+        printf("\033[35m4、找回密码\033[0m\n");
+        printf("\033[35m0、退出\033[0m\n");
+
+        int select = 3, flag = 0;
+
+        while (scanf("%d", &select) != 1 || select < 0 || select > 4)
+        {
+            printf("输入有误，请重新输入!\n");
+            rewind(stdin);
+        }
+        switch (select)
+        {
+        case 0:
+            //退出程序
+            exit(0);
+            break;
+        case 1:
+            //注册账号
+            reg(userarr);
+            break;
+        case 2:
+            //登录账号
+            if (login(userarr))
+            {
+                printf("登录成功\n");
+                flag = 1;
+            }
+            else
+            {
+                printf("登录失败，程序退出\n");
+                exit(-1);
+            }
+            break;
+        case 3:
+            revise_passwd(userarr);
+            break;
+        case 4:
+            get_passwd(userarr);
+            break;
+        }
+        if (flag == 1)
+        {
+            break;
+        }
+    }
+}
+
+//注册账号
+void reg(user *userarr)
+{
+    printf("请输入账号\n");
+    scanf("%s", userarr->userarray[userarr->size].name);
+    printf("请输入密码\n");
+    scanf("%s", userarr->userarray[userarr->size].passwd);
+    userarr->size++;
+    printf("注册成功\n");
+
+    save_user(userarr);
+}
+
+//登录账号
+bool login(user *userarr)
+{
+    char name[50], passwd[50];
+    int i, j;
+
+    for (j = 0; j < 5; ++j)
+    {
+        printf("\033[35m第%d次登录\033[0m\n", j + 1);
+        printf("\033[35m请输入你的账号\033[0m\n");
+        scanf("%s", name);
+        printf("\033[35m请输入你的密码\033[0m\n");
+        scanf("%s", passwd);
+        for (i = 0; i < userarr->size; ++i)
+        {
+            if (strcmp(userarr->userarray[i].name, name) == 0)
+            {
+                if (strcmp(userarr->userarray[i].passwd, passwd) == 0)
+                {
+                    return true;
+                }
+            }
+        }
+        printf("\033[35第%d次登录失败\033[0m\n", j + 1);
+    }
+
+    return false;
+}
+
+//修改密码
+void revise_passwd(user *userarr)
+{
+    char name[50];
+    int i;
+
+    printf("请输入你要修改的姓名\n");
+
+    scanf("%s", name);
+
+    for (i = 0; i < userarr->size; ++i)
+    {
+        if (strcmp(name, userarr->userarray[i].name) == 0)
+        {
+            printf("请输入新密码\n");
+            scanf("%s", userarr->userarray[i].passwd);
+            printf("修改成功\n");
+            save_user(userarr);
+            return;
+        }
+    }
+    printf("未找到该用户\n");
+}
+
+//找回密码
+void get_passwd(user *userarr)
+{
+    char name[50];
+    int i;
+
+    printf("请输入你要找回的姓名\n");
+
+    scanf("%s", name);
+
+    for (i = 0; i < userarr->size; ++i)
+    {
+        if (strcmp(name, userarr->userarray[i].name) == 0)
+        {
+            printf("该用户的密码为：%s\n", userarr->userarray[i].passwd);
+            return;
+        }
+    }
+    printf("未找到该用户\n");
+}
+
+//保存账号到文件
+void save_user(user *userarr)
+{
+    int i;
+    FILE *fp = fopen(USER_FILE, "w");
+
+    if (fp == NULL)
+    {
+        return;
+    }
+
+    for (i = 0; i < userarr->size; ++i)
+    {
+        fprintf(fp, "%s %s\n", userarr->userarray[i].name, userarr->userarray[i].passwd);
+    }
+
+    fclose(fp);
+}
+
+//从文件中读取管理员信息
+void read_user_file(user *userarr)
+{
+    do
+    {
+        userarr->size = 0;
+        memset(&userarr->userarray, 0, sizeof(userarr->userarray));
+        FILE *fp = fopen(USER_FILE, "r");
+        if (fp == NULL)
+        {
+            break;
+        }
+
+        while (fscanf(fp, "%s %s", &userarr->userarray[userarr->size].name,
+                      &userarr->userarray[userarr->size].passwd) != EOF)
+        {
+            userarr->size++;
+        }
+    } while (0);
+}
+
 //打印菜单
 void showMenu()
 {
-    printf("-------------------------------------------\n");
-    printf("欢迎使用药品管理系统！\n");
-    printf("请输入你要选择的编号：\n");
-    printf("1、添加药品信息\n");
-    printf("2、查看所有药品信息\n");
-    printf("3、按编号删除药品信息\n");
-    printf("4、按姓名删除药品信息\n");
-    printf("5、按编号修改药品信息\n");
-    printf("6、按姓名修改药品信息\n");
-    printf("7、按编号查找药品信息\n");
-    printf("8、按姓名查找药品信息\n");
-    printf("9、按编号排序药品信息\n");
-    printf("10、按姓名排序药品信息\n");
-    printf("0、退出本系统\n");
-    printf("-------------------------------------------\n");
+    printf("\033[34m-------------------------------------------\033[0m\n");
+    printf("\033[35m请输入你要选择的编号：\033[0m\n");
+    printf("\033[35m1、添加药品信息\033[0m\n");
+    printf("\033[35m2、查看所有药品信息\033[0m\n");
+    printf("\033[35m3、按编号删除药品信息\033[0m\n");
+    printf("\033[35m4、按姓名删除药品信息\033[0m\n");
+    printf("\033[35m5、按编号修改药品信息\033[0m\n");
+    printf("\033[35m6、按姓名修改药品信息\033[0m\n");
+    printf("\033[35m7、按编号查找药品信息\033[0m\n");
+    printf("\033[35m8、按姓名查找药品信息\033[0m\n");
+    printf("\033[35m9、按编号排序药品信息\033[0m\n");
+    printf("\033[35m10、按姓名排序药品信息\033[0m\n");
+    printf("\033[35m0、退出本系统\033[0m\n");
+    printf("\033[34m-------------------------------------------\033[0m\n");
 }
 
 //从文件中读入药品信息
-void read_file()
+void read_medicine_file()
 {
-    FILE *fp = fopen(MEDICINE_FILE_NAME, "r");
+    FILE *fp = fopen(MEDICINE_FILE, "r");
     if (fp == NULL)
     {
         med.size = 0;
@@ -199,7 +410,7 @@ void add_medicine()
         med.size++;
     }
     if (flag == 1)
-        save(); //保存到文件
+        save_medicine(); //保存到文件
 }
 
 //查看所有药品信息
@@ -267,7 +478,7 @@ void drug_number_del()
     }
 
     if (flag == 1)
-        save();
+        save_medicine();
 }
 
 //按姓名删除药品信息
@@ -315,7 +526,7 @@ void drug_name_del()
     }
 
     if (flag == 1)
-        save();
+        save_medicine();
 }
 
 //按编号修改药品信息
@@ -390,7 +601,7 @@ void drug_number_revise()
     }
 
     if (flag == 1)
-        save();
+        save_medicine();
 }
 
 //按姓名修改药品信息
@@ -462,7 +673,7 @@ void drug_name_revise()
     }
 
     if (flag == 1)
-        save();
+        save_medicine();
 }
 
 //按编号查找药品信息，返回下标
@@ -550,21 +761,87 @@ void show_drug_name_find()
     }
 }
 
+int cmp1(const void *a, const void *b) //升序
+{
+    return ((medicine *)a)->drug_number - ((medicine *)b)->drug_number;
+}
+
+int cmp2(const void *a, const void *b) //降序
+{
+    return ((medicine *)b)->drug_number - ((medicine *)a)->drug_number;
+}
+
 //按编号排序药品信息
 void drug_number_sort()
 {
+    int select = 0;
+
+    printf("1、升序         2、降序         0、退出\n");
+
+    while (scanf("%d", &select) != 1 || select < 0 || select > 2)
+    {
+        printf("输入有误，请重新输入\n");
+        rewind(stdin);
+    }
+
+    switch (select)
+    {
+    case 0:
+        break;
+    case 1:
+        qsort(&med.medicine_array, med.size, sizeof(med.medicine_array[0]), cmp1);
+        break;
+    case 2:
+        qsort(&med.medicine_array, med.size, sizeof(med.medicine_array[0]), cmp2);
+        break;
+    }
+
+    save_medicine();
+}
+
+int cmp3(const void *a, const void *b)
+{
+    return (strcmp(((medicine *)a)->drug_name, ((medicine *)b)->drug_name) > 0);
+}
+
+int cmp4(const void *a, const void *b)
+{
+    return (strcmp(((medicine *)a)->drug_name, ((medicine *)b)->drug_name) <= 0);
 }
 
 //按姓名排序药品信息
 void drug_name_sort()
 {
+    int select = 0;
+
+    printf("1、升序         2、降序         0、退出\n");
+
+    while (scanf("%d", &select) != 1 || select < 0 || select > 2)
+    {
+        printf("输入有误，请重新输入\n");
+        rewind(stdin);
+    }
+
+    switch (select)
+    {
+    case 0:
+        break;
+    case 1:
+        qsort(&med.medicine_array, med.size, sizeof(med.medicine_array[0]), cmp3);
+        break;
+    case 2:
+        qsort(&med.medicine_array, med.size, sizeof(med.medicine_array[0]), cmp4);
+        break;
+    }
+
+    save_medicine();
 }
 
 //保存药品信息到文件
-void save()
+void save_medicine()
 {
     int i;
-    FILE *fp = fopen(MEDICINE_FILE_NAME, "w");
+    FILE *fp = fopen(MEDICINE_FILE, "w");
     if (fp == NULL)
     {
         return;
@@ -579,4 +856,6 @@ void save()
                 med.medicine_array[i].price,
                 med.medicine_array[i].num);
     }
+
+    fclose(fp);
 }
