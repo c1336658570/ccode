@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define MEDICINE_FILE "medicine.txt"
-#define USER_FILE "user.txt"
+#define MEDICINE_FILE "medicine.txt" //药品文件名
+#define USER_FILE "user.txt"         //管理员文件
 
 typedef struct medicine
 {
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
         while (scanf("%d", &select) != 1 || select < 0 || select > 10)
         {
             printf("输入有误，请重新输入\n");
-            rewind(stdin); //将输入指针置于输入流首部
+            scanf("%*[^\n]%*c"); //将输入指针置于输入流首部
         }
 
         switch (select)
@@ -153,7 +153,7 @@ void login_menu(user *userarr)
         while (scanf("%d", &select) != 1 || select < 0 || select > 4)
         {
             printf("输入有误，请重新输入!\n");
-            rewind(stdin);
+            scanf("%*[^\n]%*c");
         }
         switch (select)
         {
@@ -179,10 +179,10 @@ void login_menu(user *userarr)
             }
             break;
         case 3:
-            revise_passwd(userarr);
+            revise_passwd(userarr); //修改密码
             break;
         case 4:
-            get_passwd(userarr);
+            get_passwd(userarr); //找回密码
             break;
         }
         if (flag == 1)
@@ -211,6 +211,7 @@ bool login(user *userarr)
     char name[50], passwd[50];
     int i, j;
 
+    printf("\033[35m你有5次登录机会！\033[0m\n");
     for (j = 0; j < 5; ++j)
     {
         printf("\033[35m第%d次登录\033[0m\n", j + 1);
@@ -228,7 +229,7 @@ bool login(user *userarr)
                 }
             }
         }
-        printf("\033[35第%d次登录失败\033[0m\n", j + 1);
+        printf("\033[35m第%d次登录失败\033[0m\n", j + 1);
     }
 
     return false;
@@ -237,16 +238,19 @@ bool login(user *userarr)
 //修改密码
 void revise_passwd(user *userarr)
 {
-    char name[50];
+    char name[50], passwd[50];
     int i;
 
     printf("请输入你要修改的姓名\n");
 
     scanf("%s", name);
 
+    printf("请输入原密码\n");
+    scanf("%s", passwd);
+
     for (i = 0; i < userarr->size; ++i)
     {
-        if (strcmp(name, userarr->userarray[i].name) == 0)
+        if (strcmp(name, userarr->userarray[i].name) == 0 && strcmp(passwd, userarr->userarray[i].passwd) == 0)
         {
             printf("请输入新密码\n");
             scanf("%s", userarr->userarray[i].passwd);
@@ -255,7 +259,7 @@ void revise_passwd(user *userarr)
             return;
         }
     }
-    printf("未找到该用户\n");
+    printf("账号或密码错误\n");
 }
 
 //找回密码
@@ -371,7 +375,7 @@ void add_medicine()
     while (scanf("%d", &n) != 1 || n < 0)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     //姓名   |   编号   |   类型   |   成本   |   售价   |   数量
@@ -385,7 +389,11 @@ void add_medicine()
         med.medicine_array[med.size].drug_number = 0;
         do
         {
-            scanf("%d", &num);
+            while (scanf("%d", &num) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             int ret = drug_number_find(num);
             if (ret != -1)
             {
@@ -400,11 +408,23 @@ void add_medicine()
         printf("请输入药品类型\n");
         scanf("%s", &med.medicine_array[med.size].drug_type);
         printf("请输入药品成本\n");
-        scanf("%d", &med.medicine_array[med.size].cost);
+        while (scanf("%d", &med.medicine_array[med.size].cost) != 1)
+        {
+            printf("输入有误，请重新输入!\n");
+            scanf("%*[^\n]%*c");
+        }
         printf("请输入药品售价\n");
-        scanf("%d", &med.medicine_array[med.size].price);
+        while (scanf("%d", &med.medicine_array[med.size].price) != 1)
+        {
+            printf("输入有误，请重新输入!\n");
+            scanf("%*[^\n]%*c");
+        }
         printf("请输入药品数量\n");
-        scanf("%d", &med.medicine_array[med.size].num);
+        while (scanf("%d", &med.medicine_array[med.size].num) != 1)
+        {
+            printf("输入有误，请重新输入!\n");
+            scanf("%*[^\n]%*c");
+        }
         flag = 1;
 
         med.size++;
@@ -440,7 +460,7 @@ void drug_number_del()
     while (scanf("%d", &n) != 1 || n < 0)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     for (i = 0; i < n; ++i)
@@ -451,7 +471,7 @@ void drug_number_del()
         while (scanf("%d", &number) != 1)
         {
             printf("输入有误，请重新输入\n");
-            rewind(stdin);
+            scanf("%*[^\n]%*c");
         }
 
         int ret = drug_number_find(number);
@@ -492,7 +512,7 @@ void drug_name_del()
     while (scanf("%d", &n) != 1 || n < 0)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     for (i = 0; i < n; ++i)
@@ -521,7 +541,7 @@ void drug_name_del()
         }
         else
         {
-            printf("删除失败\n");
+            printf("未找到该药品，删除失败\n");
         }
     }
 
@@ -540,7 +560,7 @@ void drug_number_revise()
     while (scanf("%d", &n) != 1 || n < 0)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     for (i = 0; i < n; ++i)
@@ -551,7 +571,7 @@ void drug_number_revise()
         while (scanf("%d", &number) != 1)
         {
             printf("输入有误，请重新输入\n");
-            rewind(stdin);
+            scanf("%*[^\n]%*c");
         }
 
         int ret = drug_number_find(number);
@@ -569,12 +589,16 @@ void drug_number_revise()
             printf("请输入药品新姓名\n");
             scanf("%s", &med.medicine_array[ret].drug_name);
             printf("请输入药品编号\n");
-            med.medicine_array[ret].drug_number = 0;
+            med.medicine_array[ret].drug_number = -1; //将该药品编号改为-1防止新输入的编号和当前编号相同，导致无法成功输入该编号
             do
             {
-                scanf("%d", &num);
-                int ret = drug_number_find(num);
-                if (ret != -1)
+                while (scanf("%d", &num) != 1)
+                {
+                    printf("输入有误，请重新输入!\n");
+                    scanf("%*[^\n]%*c");
+                }
+                int res = drug_number_find(num);
+                if (res != -1)
                 {
                     printf("该编号已经存在，请重新输入\n");
                 }
@@ -587,11 +611,23 @@ void drug_number_revise()
             printf("请输入药品类型\n");
             scanf("%s", &med.medicine_array[ret].drug_type);
             printf("请输入药品成本\n");
-            scanf("%d", &med.medicine_array[ret].cost);
+            while (scanf("%d", &med.medicine_array[ret].cost) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             printf("请输入药品售价\n");
-            scanf("%d", &med.medicine_array[ret].price);
+            while (scanf("%d", &med.medicine_array[ret].price) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             printf("请输入药品数量\n");
-            scanf("%d", &med.medicine_array[ret].num);
+            while (scanf("%d", &med.medicine_array[ret].num) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             printf("修改成功！\n");
         }
         else
@@ -616,7 +652,7 @@ void drug_name_revise()
     while (scanf("%d", &n) != 1 || n < 0)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     for (i = 0; i < n; ++i)
@@ -644,9 +680,13 @@ void drug_name_revise()
             med.medicine_array[ret].drug_number = 0;
             do
             {
-                scanf("%d", &num);
-                int ret = drug_number_find(num);
-                if (ret != -1)
+                while (scanf("%d", &num) != 1)
+                {
+                    printf("输入有误，请重新输入!\n");
+                    scanf("%*[^\n]%*c");
+                }
+                int res = drug_number_find(num);
+                if (res != -1)
                 {
                     printf("该编号已经存在，请重新输入\n");
                 }
@@ -658,12 +698,25 @@ void drug_name_revise()
             } while (1);
             printf("请输入药品类型\n");
             scanf("%s", &med.medicine_array[ret].drug_type);
+
             printf("请输入药品成本\n");
-            scanf("%d", &med.medicine_array[ret].cost);
+            while (scanf("%d", &med.medicine_array[ret].cost) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             printf("请输入药品售价\n");
-            scanf("%d", &med.medicine_array[ret].price);
+            while (scanf("%d", &med.medicine_array[ret].price) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             printf("请输入药品数量\n");
-            scanf("%d", &med.medicine_array[ret].num);
+            while (scanf("%d", &med.medicine_array[ret].num) != 1)
+            {
+                printf("输入有误，请重新输入!\n");
+                scanf("%*[^\n]%*c");
+            }
             printf("修改成功！\n");
         }
         else
@@ -701,7 +754,7 @@ void show_drug_number_find()
     while (scanf("%d", &number) != 1)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     int ret = drug_number_find(number);
@@ -781,7 +834,7 @@ void drug_number_sort()
     while (scanf("%d", &select) != 1 || select < 0 || select > 2)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     switch (select)
@@ -819,7 +872,7 @@ void drug_name_sort()
     while (scanf("%d", &select) != 1 || select < 0 || select > 2)
     {
         printf("输入有误，请重新输入\n");
-        rewind(stdin);
+        scanf("%*[^\n]%*c");
     }
 
     switch (select)
