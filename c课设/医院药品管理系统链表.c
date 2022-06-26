@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
         while (scanf("%d", &select) != 1 || select < 0 || select > 10)
         {
             printf("输入有误，请重新输入\n");
-            scanf("%*[^\n]%*c"); //将输入指针置于输入流首部
+            scanf("%*[^\n]%*c"); //将输入缓冲中所有数据丢弃
         }
 
         switch (select)
