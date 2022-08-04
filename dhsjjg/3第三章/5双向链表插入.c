@@ -8,7 +8,7 @@ typedef struct Node
     int data;
     struct Node *prior;
     struct Node *next;
-}NODE, *PNODE;
+} NODE, *PNODE;
 
 void Insert(PNODE p)
 {

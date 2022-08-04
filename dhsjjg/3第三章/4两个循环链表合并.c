@@ -6,8 +6,8 @@
 typedef struct NODE
 {
     int data;
-    struct NODE * next;
-}NODE, *PNODE;
+    struct NODE *next;
+} NODE, *PNODE;
 
 void hebing(PNODE rearA, PNODE rearB)
 {
