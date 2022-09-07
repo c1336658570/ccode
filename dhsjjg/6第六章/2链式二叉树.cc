@@ -3,6 +3,8 @@
 #include "stdlib.h"
 #include "math.h"
 #include "time.h"
+#include "stack"
+#include "queue"
 
 #define OK 1
 #define ERROR 0
@@ -153,6 +155,27 @@ void PreOrderTraverse(BiTree T)
 	PreOrderTraverse(T->rchild); /* 最后先序遍历右子树 */
 }
 
+void PreOrderTraverse2(BiTree root) //非递归前序遍历
+{
+	std::stack<BiTree> s;
+	BiTree p = root;
+	while (p != NULL || !s.empty())
+	{
+		while (p != NULL)
+		{
+			printf("%c", p->data);
+			s.push(p);
+			p = p->lchild;
+		}
+		if (!s.empty())
+		{
+			p = s.top();
+			s.pop();
+			p = p->rchild;
+		}
+	}
+}
+
 /* 初始条件: 二叉树T存在 */
 /* 操作结果: 中序递归遍历T */
 void InOrderTraverse(BiTree T)
@@ -164,6 +187,49 @@ void InOrderTraverse(BiTree T)
 	InOrderTraverse(T->rchild); /* 最后中序遍历右子树 */
 }
 
+void InOrderTraverse2(BiTree T) //非递归前序遍历
+{
+	BiTree p, q;
+	std::stack<BiTree> s;
+	p = T;
+	while (p || !s.empty())
+	{
+		if (p)
+		{
+			s.push(p);
+			p = p->lchild;
+		}
+		else
+		{
+			q = s.top();
+			s.pop();
+			printf("%c", q->data);
+			p = q->rchild;
+		}
+	}
+}
+
+void InOrderTraverse3(BiTree root) //非递归中序遍历
+{
+	std::stack<BiTree> s;
+	BiTree p = root;
+	while (p != NULL || !s.empty())
+	{
+		while (p != NULL)
+		{
+			s.push(p);
+			p = p->lchild;
+		}
+		if (!s.empty())
+		{
+			p = s.top();
+			printf("%c", p->data);
+			s.pop();
+			p = p->rchild;
+		}
+	}
+}
+
 /* 初始条件: 二叉树T存在 */
 /* 操作结果: 后序递归遍历T */
 void PostOrderTraverse(BiTree T)
@@ -173,6 +239,121 @@ void PostOrderTraverse(BiTree T)
 	PostOrderTraverse(T->lchild); /* 先后序遍历左子树  */
 	PostOrderTraverse(T->rchild); /* 再后序遍历右子树  */
 	printf("%c", T->data);		  /* 显示结点数据，可以更改为其它对结点操作 */
+}
+
+typedef struct node1
+{
+	BiTree *btnode;
+	bool isFirst;
+} BTNode;
+
+void PostOrderTraverse2(BiTree root) //非递归后序遍历
+{
+	std::stack<BiTree> s;
+	BiTree cur;		   //当前结点
+	BiTree pre = NULL; //前一次访问的结点
+	s.push(root);
+	while (!s.empty())
+	{
+		cur = s.top();
+		if ((cur->lchild == NULL && cur->rchild == NULL) ||
+			(pre != NULL && (pre == cur->lchild || pre == cur->rchild)))
+		{
+			printf("%c", cur->data); //如果当前结点没有孩子结点或者孩子节点都已被访问过
+			s.pop();
+			pre = cur;
+		}
+		else
+		{
+			if (cur->rchild != NULL)
+				s.push(cur->rchild);
+			if (cur->lchild != NULL)
+				s.push(cur->lchild);
+		}
+	}
+}
+
+//层序遍历
+void LevelOrder(BiTNode *b)
+{
+	BiTNode *p;
+	std::queue<BiTNode *> qu;
+	qu.push(b); //根结点入对
+	while (!qu.empty())
+	{
+		p = qu.front();
+		qu.pop();
+		printf("%c", p->data);
+		if (p->lchild != NULL)
+		{
+			qu.push(p->lchild); //左孩子入对
+		}
+		if (p->rchild != NULL)
+		{
+			qu.push(p->rchild); //右孩子入对
+		}
+	}
+}
+
+//复制二叉树
+//先根，再左，再右
+int Copy(BiTree T, BiTree *NewT)
+{
+	if (T == NULL) //如果空树返回0
+	{
+		*NewT = NULL;
+		return 0;
+	}
+	else
+	{
+		*NewT = (BiTree)malloc(sizeof(BiTNode));
+		(*NewT)->data = T->data;
+		Copy(T->lchild, &(*NewT)->lchild);
+		Copy(T->rchild, &(*NewT)->rchild);
+	}
+}
+
+//计算二叉树深度
+int Depth(BiTree T)
+{
+	if (T == NULL)
+	{
+		return 0;
+	}
+
+	int m, n;
+
+	m = Depth(T->lchild);
+	n = Depth(T->rchild);
+	return m > n ? m + 1 : n + 1;
+}
+
+//求二叉树结点总个数
+//左子树结点+右子树结点+1
+int NodeCount(BiTree T)
+{
+	if (T == NULL)
+		return 0;
+	return NodeCount(T->lchild) + NodeCount(T->rchild) + 1;
+}
+
+//求叶子结点个数
+//左子树叶子结点+右子树叶子结点
+int LeafCount(BiTree T)
+{
+	if (T == NULL)
+	{
+		return 0;
+	}
+
+	if (T->lchild == NULL && T->rchild == NULL)
+	{
+		return 1;
+	}
+	else
+	{
+		return LeafCount(T->lchild) + LeafCount(T->rchild);
+	}
 }
 
 int main()
@@ -190,12 +371,34 @@ int main()
 	e1 = Root(T);
 	printf("二叉树的根为: %c\n", e1);
 
-	printf("\n前序遍历二叉树:");
+	printf("\n递归前序遍历二叉树:");
 	PreOrderTraverse(T);
-	printf("\n中序遍历二叉树:");
+	printf("\n非递归前序遍历二叉树:");
+	PreOrderTraverse2(T);
+
+	printf("\n递归中序遍历二叉树:");
 	InOrderTraverse(T);
-	printf("\n后序遍历二叉树:");
+	printf("\n非递归中序遍历二叉树:");
+	InOrderTraverse2(T);
+	printf("\n非递归中序遍历二叉树:");
+	InOrderTraverse3(T);
+
+	printf("\n递归后序遍历二叉树:");
 	PostOrderTraverse(T);
+	printf("\n非递归后序遍历二叉树:");
+	PostOrderTraverse2(T);
+
+	printf("\n层序遍历二叉树:");
+	LevelOrder(T);
+
+	printf("\n二叉树的深度为:%d", Depth(T));
+
+	//复制二叉树
+	BiTree T2;
+	Copy(T, &T2);
+	printf("\n递归前序遍历复制后的二叉树:");
+	PreOrderTraverse(T2);
+
 	ClearBiTree(&T);
 	printf("\n清除二叉树后,树空否？%d(1:是 0:否) 树的深度=%d\n", BiTreeEmpty(T), BiTreeDepth(T));
 	i = Root(T);

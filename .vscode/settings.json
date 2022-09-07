@@ -22,6 +22,8 @@
         "cstdio": "c",
         "functional": "c",
         "B.C": "cpp",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "stack": "cpp",
+        "deque": "cpp"
     }
 }

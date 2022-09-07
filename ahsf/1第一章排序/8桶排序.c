@@ -1,9 +1,9 @@
 /*
     桶排序
-    最好时间复杂度(n)
-    最差时间复杂度(N方)
-    时间复杂度(n+k)
-    空间复杂度(n+k)
+    最好时间复杂度(n+m)
+    最差时间复杂度((n+m)*k)
+    时间复杂度O((n+m)*k)
+    空间复杂度O(n+m)
     稳定
 */
 
@@ -13,11 +13,11 @@
         8 100 50 22 15 6 1 1000 999 0
 
     输出：
-        1000 999 100 50 22 15 8 6 1 0 
+        1000 999 100 50 22 15 8 6 1 0
 
 */
 
-# include <stdio.h>
+#include <stdio.h>
 
 int main(void)
 {
@@ -53,6 +53,4 @@ void bucketSort(int *arr, int len, int max)
     int buckets[max];
 
     memset(buckets, 0, sizeof(buckets));
-
-
 }
