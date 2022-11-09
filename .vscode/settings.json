@@ -24,6 +24,11 @@
         "B.C": "cpp",
         "typeinfo": "c",
         "stack": "cpp",
-        "deque": "cpp"
-    }
+        "deque": "cpp",
+        "types.h": "c",
+        "fcntl.h": "c",
+        "environments.h": "c"
+    },
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "aiXcoder.showTrayIcon": true
 }
