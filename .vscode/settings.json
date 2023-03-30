@@ -27,7 +27,8 @@
         "deque": "cpp",
         "types.h": "c",
         "fcntl.h": "c",
-        "environments.h": "c"
+        "environments.h": "c",
+        "in.h": "c"
     },
     "editor.suggest.snippetsPreventQuickSuggestions": false,
     "aiXcoder.showTrayIcon": true
