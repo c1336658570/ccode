@@ -14,5 +14,6 @@ int main()
     printf("%s\n", *cpp[-2] + 3);
     printf("%s\n", cpp[-1][-1] + 1);
 
+    while (1);
     return 0;
 }
